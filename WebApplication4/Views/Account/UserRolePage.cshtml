@@ -3,14 +3,27 @@
 @{
     ViewBag.Title = "UserRolePage";
 }
-
-<h2>UserRolePage</h2>
-
-            Search for User:
+<h3>Search for Users</h3>
 <form action="@Url.Action("UserRolePage")" method="get" class="formalign">
-    First Name: <input type="text" id="FirstName" name="FirstName" />
-    Last Name: <input type="text" id="LastName" name="LastName" />
-    <button type="submit" class="btn btn-primary">Search</button>
+    <div class="row">
+        <div class="col-xs-2">
+            First Name: 
+        </div>
+        <div class="col-xs-2">
+            <input type="text" id="FirstName" name="FirstName" />
+        </div>
+        <div class="col-xs-2">
+            Last Name: 
+        </div>
+        <div class="col-xs-2">
+            <input type="text" id="LastName" name="LastName" />
+        </div>
+        <div class="col-xs-1">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+        <div class="col-xs-3">
+        </div>
+    </div>
 </form>
 <br />
     @if (Model.master == null)
@@ -20,12 +33,29 @@
     {
         if (Model.master.Count > 0)
         {
+            @:<h3>Search Results</h3>
+            @:<hr class="hrcolor" />
             foreach (var user in Model.master)
             {
                 @:<form action="@Url.Action("UserRolePage")" method="get" class="formalign">
-                    @:First Name: @Html.Raw(user.FirstName) Last Name: @Html.Raw(user.LastName) Email: @Html.Raw(user.Email)
-                    @:<input name="id" value="@user.Id" hidden />
-                    @:<button type="submit">Select User</button>
+                    @:<div class="row">
+                        @:<div class="col-xs-1">
+                            @:Name:
+                        @:</div>
+                        @:<div class="col-xs-4">
+                            @Html.Raw(user.FirstName + " " + user.LastName)
+                        @:</div>
+                        @:<div class="col-xs-1">
+                            @:Email:
+                        @:</div>
+                        @:<div class="col-xs-4">
+                            @Html.Raw(user.Email)
+                        @:</div>
+                        @:<div class="col-xs-2">
+                            @:<input name="id" value="@user.Id" hidden />
+                            @:<button type="submit" class="btn btn-primary">Select User</button>
+                        @:</div>
+                    @:</div>
                 @:</form>
             }
         }
@@ -36,17 +66,16 @@
     }
     @if (Model.RoleIn == null)
     {
-        
     }
     else
     {
+        @:<h3>Assign Roles for User</h3>
+        @:<hr class="hrcolor" />
         @:<form action="@Url.Action("UserRolePage")" method="post" class="formalign">
             @Html.AntiForgeryToken()
-            @:Assign Roles to User:<br />
-            @:@Model.RoleIn.User.FirstName
-            @:@Model.RoleIn.User.LastName
+            @:<h4>@Html.Raw(Model.RoleIn.User.FirstName + " " + Model.RoleIn.User.LastName)</h4>
             @:<input name="id" value="@Model.RoleIn.User.Id" hidden />
-            @:@Html.ListBoxFor(x => x.RoleIn.Roles, Model.RoleIn.RoleInput, new { Name = "Roles" })
-            @:<button type="submit">Change User Roles</button>
+            @:@Html.ListBoxFor(x => x.RoleIn.Roles, Model.RoleIn.RoleInput, new { Name = "Roles" })<br /><br />
+            @:<button type="submit" class="btn btn-primary">Change User Roles</button>
         @:</form>
     }

@@ -2,6 +2,10 @@
     display: inline;
 }
 
+.hrcolor {
+    border-color: #A8A8A0;
+}
+
 .navbar-static-top {
   margin-bottom:20px;
 }

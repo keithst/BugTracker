@@ -441,11 +441,28 @@ namespace WebApplication4.Controllers
         public ActionResult UserRolePage(string id, string[] Roles)
         {
             UserRoleHelper helper = new UserRoleHelper();
+            IList<string> temp = helper.ListUserRoles(id);
+            var remove = true;
             foreach(var item in Roles)
             {
                 if(!helper.IsUserInRole(id, item))
                 {
                     helper.AddUserToRole(id, item);
+                }
+            }
+            foreach(var tempitem in temp)
+            {
+                remove = true;
+                foreach(var item in Roles)
+                {
+                    if(tempitem == item)
+                    {
+                        remove = false;
+                    }
+                }
+                if(remove)
+                {
+                    helper.RemoveUserFromRole(id, tempitem);
                 }
             }
 
