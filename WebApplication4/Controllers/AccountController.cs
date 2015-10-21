@@ -9,12 +9,17 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebApplication4.Models;
+using WebApplication4.Models.helper;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace WebApplication4.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+        private RoleManagerBug masterlist = new RoleManagerBug();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -57,7 +62,6 @@ namespace WebApplication4.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -79,7 +83,7 @@ namespace WebApplication4.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Main", "Home");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -401,6 +405,51 @@ namespace WebApplication4.Controllers
         public ActionResult ExternalLoginFailure()
         {
             return View();
+        }
+
+        public ActionResult UserRolePage()
+        {
+            return View(masterlist);
+        }
+
+        [HttpGet]
+        public ActionResult UserRolePage(string FirstName, string LastName, string id)
+        {
+            if (!string.IsNullOrWhiteSpace(FirstName) || !string.IsNullOrWhiteSpace(LastName))
+            {
+                var queryUsers = db.Users.AsQueryable();
+                masterlist.master = queryUsers.Where(x => (x.FirstName.Contains(FirstName)) || (x.LastName.Contains(LastName))
+                    ).OrderByDescending(z => z.LastName).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                var finduser = db.Users.Find(id);
+                UserRoleAssignment RoleModel = new UserRoleAssignment();
+                UserRoleHelper helper = new UserRoleHelper();
+                var selected = helper.ListUserRoles(id);
+                RoleModel.RoleInput = new MultiSelectList(db.Roles, "Name", "Name", selected);
+                RoleModel.User = finduser;
+                masterlist.RoleIn = RoleModel;
+            }
+
+            return View(masterlist);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UserRolePage(string id, string[] Roles)
+        {
+            UserRoleHelper helper = new UserRoleHelper();
+            foreach(var item in Roles)
+            {
+                if(!helper.IsUserInRole(id, item))
+                {
+                    helper.AddUserToRole(id, item);
+                }
+            }
+
+            return View(masterlist);
         }
 
         protected override void Dispose(bool disposing)

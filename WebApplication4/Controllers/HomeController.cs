@@ -26,5 +26,10 @@ namespace WebApplication4.Controllers
 
             return View();
         }
+
+        public ActionResult Main()
+        {
+            return View();
+        }
     }
 }

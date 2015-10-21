@@ -166,6 +166,9 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\helper\RoleManagerBug.cs" />
+    <Compile Include="Models\helper\UserRoleAssignment.cs" />
+    <Compile Include="Models\helper\UserRoleHelper.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Projects.cs" />
@@ -245,11 +248,15 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Home\Main.cshtml" />
+    <Content Include="Views\Account\AssignRoles.cshtml" />
+    <Content Include="Views\Account\UserRolePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\ProjectsUsers\" />
     <Folder Include="Views\Projects\" />
+    <Folder Include="Views\RoleManager\" />
     <Folder Include="Views\TicketAttach\" />
     <Folder Include="Views\TicketComments\" />
     <Folder Include="Views\TicketHistory\" />
@@ -258,6 +265,8 @@
     <Folder Include="Views\TicketStatus\" />
     <Folder Include="Views\TicketType\" />
     <Folder Include="Views\Ticket\" />
+    <Folder Include="Views\UserRoleAssignment\" />
+    <Folder Include="Views\UserRoleHelper\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

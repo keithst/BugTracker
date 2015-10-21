@@ -55,6 +55,10 @@ namespace WebApplication4.Migrations
             {
                 roleManager.Create(new IdentityRole { Name = "Submitter" });
             }
+            if (!context.Roles.Any(r => r.Name == "Unassigned"))
+            {
+                roleManager.Create(new IdentityRole { Name = "Unassigned" });
+            }
         }
     }
 }
