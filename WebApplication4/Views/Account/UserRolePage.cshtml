@@ -46,10 +46,10 @@
                             @Html.Raw(user.FirstName + " " + user.LastName)
                         @:</div>
                         @:<div class="col-xs-1">
-                            @:Email:
+                            @:UserName:
                         @:</div>
                         @:<div class="col-xs-4">
-                            @Html.Raw(user.Email)
+                            @Html.Raw(user.UserName)
                         @:</div>
                         @:<div class="col-xs-2">
                             @:<input name="id" value="@user.Id" hidden />
@@ -73,9 +73,23 @@
         @:<hr class="hrcolor" />
         @:<form action="@Url.Action("UserRolePage")" method="post" class="formalign">
             @Html.AntiForgeryToken()
-            @:<h4>@Html.Raw(Model.RoleIn.User.FirstName + " " + Model.RoleIn.User.LastName)</h4>
+            @:<h4>@Html.Raw(Model.RoleIn.User.UserName)</h4>
             @:<input name="id" value="@Model.RoleIn.User.Id" hidden />
+            @:<input name="Username" value="@Model.RoleIn.User.UserName" hidden />
             @:@Html.ListBoxFor(x => x.RoleIn.Roles, Model.RoleIn.RoleInput, new { Name = "Roles" })<br /><br />
             @:<button type="submit" class="btn btn-primary">Change User Roles</button>
         @:</form>
+    }
+    @if (Model.response == null)
+    {
+    }
+    else
+    {
+        @:<h3>Actions Performed</h3>
+        @:<hr class="hrcolor" />
+        string[] parse = Model.response.Split('&');
+        foreach(var resp in parse)
+        {
+            @:@Html.Raw(resp)<br />
+        }
     }

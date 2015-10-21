@@ -438,7 +438,7 @@ namespace WebApplication4.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UserRolePage(string id, string[] Roles)
+        public ActionResult UserRolePage(string id, string Username, string[] Roles)
         {
             UserRoleHelper helper = new UserRoleHelper();
             IList<string> temp = helper.ListUserRoles(id);
@@ -448,6 +448,7 @@ namespace WebApplication4.Controllers
                 if(!helper.IsUserInRole(id, item))
                 {
                     helper.AddUserToRole(id, item);
+                    masterlist.response += "Added Role " + item + " to User " + Username + "&";
                 }
             }
             foreach(var tempitem in temp)
@@ -463,6 +464,7 @@ namespace WebApplication4.Controllers
                 if(remove)
                 {
                     helper.RemoveUserFromRole(id, tempitem);
+                    masterlist.response += "Removed Role " + tempitem + " from User " + Username + "&";
                 }
             }
 
