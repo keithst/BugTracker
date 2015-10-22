@@ -13,7 +13,6 @@ namespace WebApplication4.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -42,6 +41,6 @@ namespace WebApplication4.Models
         public DbSet<TicketStatus> Status { get; set; }
         public DbSet<TicketType> Types { get; set; }
         public DbSet<Projects> Projects { get; set; }
-        public DbSet<ProjectsUsers> ProjectsUsers { get; set; }
+        public DbSet<ProjectUsers> ProjectUsers { get; set; }
     }
 }

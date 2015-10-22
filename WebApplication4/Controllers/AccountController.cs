@@ -163,9 +163,9 @@ namespace WebApplication4.Controllers
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -207,7 +207,7 @@ namespace WebApplication4.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
@@ -215,10 +215,10 @@ namespace WebApplication4.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
@@ -417,26 +417,21 @@ namespace WebApplication4.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult UserRolePage(string FirstName, string LastName, string UserName, string id)
         {
-            if (!string.IsNullOrWhiteSpace(FirstName) || !string.IsNullOrWhiteSpace(LastName) || !string.IsNullOrWhiteSpace(UserName))
-            {
                 var queryUsers = db.Users.AsQueryable();
-                masterlist.master = queryUsers.Where(x => (x.FirstName.Contains(FirstName)) || (x.LastName.Contains(LastName)) || (x.UserName.Contains(UserName))
-                    ).OrderByDescending(z => z.LastName).OrderByDescending(p => p.FirstName).ToList();
+                masterlist.master = queryUsers.OrderByDescending(g => g.LastName).OrderByDescending(p => p.FirstName).ToList();
                 UserRoleHelper helper = new UserRoleHelper();
-                masterlist.helperin = helper;
-            }
 
             if (!string.IsNullOrWhiteSpace(id))
             {
                 var finduser = db.Users.Find(id);
                 UserRoleAssignment RoleModel = new UserRoleAssignment();
-                UserRoleHelper helper = new UserRoleHelper();
                 var selected = helper.ListUserRoles(id);
                 RoleModel.RoleInput = new MultiSelectList(db.Roles, "Name", "Name", selected);
                 RoleModel.User = finduser;
                 masterlist.RoleIn = RoleModel;
+                masterlist.master = null;
             }
-
+            masterlist.helperin = helper;
             return View(masterlist);
         }
 
