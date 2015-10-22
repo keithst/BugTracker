@@ -11,5 +11,6 @@ namespace WebApplication4.Models.helper
         public UserRoleAssignment RoleIn { get; set; }
         public IList<ApplicationUser> master { get; set; }
         public string response { get; set; }
+        public UserRoleHelper helperin { get; set; }
     }
 }

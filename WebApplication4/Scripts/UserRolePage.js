@@ -1,0 +1,3 @@
+﻿function closeTab() {
+    window.close();
+}

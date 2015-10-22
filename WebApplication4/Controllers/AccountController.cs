@@ -407,19 +407,23 @@ namespace WebApplication4.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult UserRolePage()
         {
             return View(masterlist);
         }
 
         [HttpGet]
-        public ActionResult UserRolePage(string FirstName, string LastName, string id)
+        [Authorize(Roles = "Admin")]
+        public ActionResult UserRolePage(string FirstName, string LastName, string UserName, string id)
         {
-            if (!string.IsNullOrWhiteSpace(FirstName) || !string.IsNullOrWhiteSpace(LastName))
+            if (!string.IsNullOrWhiteSpace(FirstName) || !string.IsNullOrWhiteSpace(LastName) || !string.IsNullOrWhiteSpace(UserName))
             {
                 var queryUsers = db.Users.AsQueryable();
-                masterlist.master = queryUsers.Where(x => (x.FirstName.Contains(FirstName)) || (x.LastName.Contains(LastName))
-                    ).OrderByDescending(z => z.LastName).ToList();
+                masterlist.master = queryUsers.Where(x => (x.FirstName.Contains(FirstName)) || (x.LastName.Contains(LastName)) || (x.UserName.Contains(UserName))
+                    ).OrderByDescending(z => z.LastName).OrderByDescending(p => p.FirstName).ToList();
+                UserRoleHelper helper = new UserRoleHelper();
+                masterlist.helperin = helper;
             }
 
             if (!string.IsNullOrWhiteSpace(id))
@@ -438,6 +442,7 @@ namespace WebApplication4.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult UserRolePage(string id, string Username, string[] Roles)
         {
             UserRoleHelper helper = new UserRoleHelper();
