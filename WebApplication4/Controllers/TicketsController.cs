@@ -58,7 +58,7 @@ namespace WebApplication4.Models
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerId,AssignedId")] Ticket ticket, string Status, string Type, string Priority, string Project)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerId,AssignedId")] Ticket ticket, string Title, string Description, string Status, string Type, string Priority, string Project)
         {
             if (ModelState.IsValid)
             {
@@ -86,6 +86,8 @@ namespace WebApplication4.Models
                     var queryt = queryty.Where(x => x.Type == Type).Select(y => y.Id).Single();
                     ticket.TicketTypeId = queryt;
                 }
+                ticket.Title = Title;
+                ticket.Description = Description;
                 ticket.Created = System.DateTimeOffset.Now;
                 ticket.OwnerId = User.Identity.GetUserId();
                 db.Tickets.Add(ticket);
