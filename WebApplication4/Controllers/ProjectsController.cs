@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace WebApplication4.Models
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

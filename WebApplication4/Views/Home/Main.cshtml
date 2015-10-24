@@ -17,7 +17,10 @@
                         <li class="active"> <a href="#"><i class="glyphicon glyphicon-home"></i> Home</a></li>
                         <li><a href="#"><i class="glyphicon glyphicon-envelope"></i> Messages <span class="badge badge-info">4</span></a></li>
                         <li><a href="#"><i class="glyphicon glyphicon-cog"></i> Options</a></li>
-                        <li><a href="#"><i class="glyphicon glyphicon-comment"></i> Shoutbox</a></li>
+                        @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                        {
+                            <li><a href="@Url.Action("Index", "Projects")"><i class="glyphicon glyphicon-user"></i> Project List</a></li>
+                        }
                         @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
                         {
                             <li><a href="@Url.Action("Index", "Tickets")"><i class="glyphicon glyphicon-user"></i> Ticket List</a></li>

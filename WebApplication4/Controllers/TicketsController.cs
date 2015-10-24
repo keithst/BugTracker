@@ -62,6 +62,31 @@ namespace WebApplication4.Models
         {
             if (ModelState.IsValid)
             {
+                var queryp = db.Priorities.AsQueryable();
+                var querys = db.Status.AsQueryable();
+                var querypr = db.Projects.AsQueryable();
+                var queryty = db.Types.AsQueryable();
+                if(!string.IsNullOrWhiteSpace(Priority))
+                {
+                    var queryt = queryp.Where(x => x.Priority == Priority).Select(y => y.Id).Single();
+                    ticket.TicketPriorityId = queryt;
+                }
+                if(!string.IsNullOrWhiteSpace(Status))
+                {
+                    var queryt = querys.Where(x => x.Status == Status).Select(y => y.Id).Single();
+                    ticket.TicketStatusId = queryt;
+                }
+                if(!string.IsNullOrWhiteSpace(Project))
+                {
+                    var queryt = querypr.Where(x => x.Project == Project).Select(y => y.Id).Single();
+                    ticket.ProjectId = queryt;
+                }
+                if(!string.IsNullOrWhiteSpace(Type))
+                {
+                    var queryt = queryty.Where(x => x.Type == Type).Select(y => y.Id).Single();
+                    ticket.TicketTypeId = queryt;
+                }
+                ticket.Created = System.DateTimeOffset.Now;
                 ticket.OwnerId = User.Identity.GetUserId();
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
