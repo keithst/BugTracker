@@ -169,13 +169,16 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProjectUsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\helper\ListboxTicket.cs" />
     <Compile Include="Models\helper\ProjectsIn.cs" />
     <Compile Include="Models\helper\RoleManagerBug.cs" />
+    <Compile Include="Models\helper\TicketIn.cs" />
     <Compile Include="Models\helper\UserRoleAssignment.cs" />
     <Compile Include="Models\helper\UserRoleHelper.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -272,16 +275,22 @@
     <Content Include="Views\Projects\Details.cshtml" />
     <Content Include="Views\Projects\Edit.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="Views\ProjectUsers\Create.cshtml" />
+    <Content Include="Views\ProjectUsers\Delete.cshtml" />
+    <Content Include="Views\ProjectUsers\Details.cshtml" />
+    <Content Include="Views\ProjectUsers\Edit.cshtml" />
+    <Content Include="Views\ProjectUsers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ListboxTicket\" />
     <Folder Include="Views\ProjectsIn\" />
     <Folder Include="Views\ProjectsUsers\" />
-    <Folder Include="Views\ProjectUsers\" />
     <Folder Include="Views\RoleManager\" />
     <Folder Include="Views\TicketAttach\" />
     <Folder Include="Views\TicketComments\" />
     <Folder Include="Views\TicketHistory\" />
+    <Folder Include="Views\TicketIn\" />
     <Folder Include="Views\TicketNotify\" />
     <Folder Include="Views\TicketPriority\" />
     <Folder Include="Views\TicketStatus\" />

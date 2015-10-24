@@ -59,6 +59,57 @@ namespace WebApplication4.Migrations
             {
                 roleManager.Create(new IdentityRole { Name = "Unassigned" });
             }
+
+            if (!context.Priorities.Any(r => r.Priority == "Critical"))
+            {
+                context.Priorities.Add(new TicketPriority { Priority = "Critical" });
+            }
+            if (!context.Priorities.Any(r => r.Priority == "High"))
+            {
+                context.Priorities.Add(new TicketPriority { Priority = "High" });
+            }
+            if (!context.Priorities.Any(r => r.Priority == "Medium"))
+            {
+                context.Priorities.Add(new TicketPriority { Priority = "Medium" });
+            }
+            if (!context.Priorities.Any(r => r.Priority == "Low"))
+            {
+                context.Priorities.Add(new TicketPriority { Priority = "Low" });
+            }
+
+            if (!context.Status.Any(r => r.Status == "Fixed"))
+            {
+                context.Status.Add(new TicketStatus { Status = "Fixed" });
+            }
+            if (!context.Status.Any(r => r.Status == "Open"))
+            {
+                context.Status.Add(new TicketStatus { Status = "Open" });
+            }
+            if (!context.Status.Any(r => r.Status == "Assigned"))
+            {
+                context.Status.Add(new TicketStatus { Status = "Assigned" });
+            }
+            if (!context.Status.Any(r => r.Status == "Released"))
+            {
+                context.Status.Add(new TicketStatus { Status = "Released" });
+            }
+            if (!context.Status.Any(r => r.Status == "Returned"))
+            {
+                context.Status.Add(new TicketStatus { Status = "Returned" });
+            }
+            if (!context.Status.Any(r => r.Status == "NoBug"))
+            {
+                context.Status.Add(new TicketStatus { Status = "NoBug" });
+            }
+
+            if (!context.Types.Any(r => r.Type == "Enhancement"))
+            {
+                context.Types.Add(new TicketType { Type = "Enhancement" });
+            }
+            if (!context.Types.Any(r => r.Type == "Bug"))
+            {
+                context.Types.Add(new TicketType { Type = "Bug" });
+            }
         }
     }
 }

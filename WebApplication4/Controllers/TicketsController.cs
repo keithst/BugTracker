@@ -6,12 +6,15 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using WebApplication4.Models.helper;
 
 namespace WebApplication4.Models
 {
     public class TicketsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private TicketIn tickets = new TicketIn();
 
         // GET: Tickets
         [Authorize]
@@ -37,37 +40,34 @@ namespace WebApplication4.Models
         }
 
         // GET: Tickets/Create
+        [Authorize]
         public ActionResult Create()
         {
-            ViewBag.AssignedId = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Project");
-            ViewBag.TicketPriorityId = new SelectList(db.Priorities, "Id", "Priority");
-            ViewBag.TicketStatusId = new SelectList(db.Status, "Id", "Status");
-            ViewBag.TicketTypeId = new SelectList(db.Types, "Id", "Type");
-            return View();
+            ListboxTicket lbt = new ListboxTicket();
+            lbt.PriorityInput = new SelectList(db.Priorities, "Priority", "Priority");
+            lbt.StatusInput = new SelectList(db.Status, "Status", "Status");
+            lbt.TypeInput = new SelectList(db.Types, "Type", "Type");
+            lbt.ProjectInput = new SelectList(db.Projects, "Project", "Project");
+            tickets.lists = lbt;
+            return View(tickets);
         }
 
         // POST: Tickets/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerId,AssignedId")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerId,AssignedId")] Ticket ticket, string Status, string Type, string Priority, string Project)
         {
             if (ModelState.IsValid)
             {
+                ticket.OwnerId = User.Identity.GetUserId();
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.AssignedId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedId);
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Project", ticket.ProjectId);
-            ViewBag.TicketPriorityId = new SelectList(db.Priorities, "Id", "Priority", ticket.TicketPriorityId);
-            ViewBag.TicketStatusId = new SelectList(db.Status, "Id", "Status", ticket.TicketStatusId);
-            ViewBag.TicketTypeId = new SelectList(db.Types, "Id", "Type", ticket.TicketTypeId);
             return View(ticket);
         }
 
