@@ -10,5 +10,6 @@ namespace WebApplication4.Models.helper
     {
         public SelectList users { get; set; }
         public string user { get; set; }
+        public int pid { get; set; }
     }
 }

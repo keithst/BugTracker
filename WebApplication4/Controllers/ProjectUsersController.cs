@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -38,9 +39,10 @@ namespace WebApplication4.Controllers
         }
 
         // GET: ProjectUsers/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
             user.users = new SelectList(db.Users, "UserName", "UserName");
+            user.pid = id;
             return View(user);
         }
 
@@ -49,10 +51,12 @@ namespace WebApplication4.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProjectId,ProjectUserId")] ProjectUsers projectUsers)
+        public ActionResult Create([Bind(Include = "Id,ProjectId,ProjectUserId")] ProjectUsers projectUsers, string User)
         {
             if (ModelState.IsValid)
             {
+                var id = db.Users.Where(x => x.UserName == User).Select(y => y.Id).Single();
+                projectUsers.ProjectUserId = id;
                 db.ProjectUsers.Add(projectUsers);
                 db.SaveChanges();
                 return RedirectToAction("Index");

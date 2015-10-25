@@ -15,7 +15,8 @@
         <h4>ProjectUsers</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.DropDownListFor(x => x.user, Model.users)
+        @Html.DropDownListFor(x => x.user, Model.users, new { Name = "User" })
+        <input value="@Model.pid" name="ProjectId" hidden />
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
