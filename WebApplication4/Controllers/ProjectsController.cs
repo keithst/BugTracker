@@ -27,10 +27,11 @@ namespace WebApplication4.Models
             {
                 var query = db.ProjectUsers.AsQueryable();
                 var queryt = db.Projects.AsQueryable();
-                var ids = query.Where(x => x.ProjectUserId == User.Identity.GetUserId()).Select(x => x.ProjectId);
+                var idin = User.Identity.GetUserId();
+                var ids = query.Where(x => x.ProjectUserId == idin).Select(x => x.ProjectId).ToList();
                 foreach(var id in ids)
                 {
-                    master = master.Union(queryt.Where(x => x.Id == id)).ToList();
+                    master = queryt.Union(queryt.Where(x => x.Id == id)).ToList();
                 }
             }
             return View(master);

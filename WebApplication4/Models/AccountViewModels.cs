@@ -65,12 +65,10 @@ namespace WebApplication4.Models
     public class RegisterViewModel
     {
         [Required]
-        [EmailAddress]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
-        [EmailAddress]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 

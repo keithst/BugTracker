@@ -16,6 +16,7 @@ namespace WebApplication4.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private Userhelp user = new Userhelp();
+        private UserRoleHelper helper = new UserRoleHelper();
 
         // GET: ProjectUsers
         public ActionResult Index()
@@ -41,7 +42,15 @@ namespace WebApplication4.Controllers
         // GET: ProjectUsers/Create
         public ActionResult Create(int id)
         {
-            user.users = new SelectList(db.Users, "UserName", "UserName");
+            if(User.IsInRole("Admin"))
+            {
+                user.users = new SelectList(db.Users, "UserName", "UserName");
+            }
+            if(User.IsInRole("ProjectManager"))
+            {
+                var developers = helper.UsersInRole("Developer");
+                user.users = new SelectList(developers, "UserName", "UserName");
+            }
             user.pid = id;
             return View(user);
         }
