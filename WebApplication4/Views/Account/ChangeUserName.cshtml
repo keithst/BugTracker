@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "ChangeUserName";
+}
+
+<h2>ChangeUserName</h2>
+
+<form action="@Url.Action("ChangeUserName", "Account")" method="post">
+    <input type="text" id="search" name="UserName" />
+    <button type="submit">Update</button>
+</form>

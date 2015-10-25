@@ -29,6 +29,10 @@
                         {
                             <li><a href="@Url.Action("ChangePassword", "Manage")"><i class="glyphicon glyphicon-flag"></i> Change Password</a></li>
                         }
+                        @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                        {
+                            <li><a href="@Url.Action("ChangeUserName", "Account")"><i class="glyphicon glyphicon-user"></i> Change UserName</a></li>
+                        }
                         @if (User.IsInRole("Admin"))
                         {
                             <li><a href="@Url.Action("UserRolePage", "Account")"><i class="glyphicon glyphicon-exclamation-sign"></i> Roles</a></li>

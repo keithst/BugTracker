@@ -281,6 +281,7 @@
     <Content Include="Views\ProjectUsers\Details.cshtml" />
     <Content Include="Views\ProjectUsers\Edit.cshtml" />
     <Content Include="Views\ProjectUsers\Index.cshtml" />
+    <Content Include="Views\Account\ChangeUserName.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

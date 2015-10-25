@@ -471,6 +471,20 @@ namespace WebApplication4.Controllers
             return View(masterlist);
         }
 
+        public ActionResult ChangeUserName()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ChangeUserName(string UserName)
+        {
+            var userin = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            userin.UserName = UserName;
+            IdentityResult result = await UserManager.UpdateAsync(userin);
+            return RedirectToAction("Main", "Home");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
