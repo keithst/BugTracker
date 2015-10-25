@@ -110,6 +110,7 @@ namespace WebApplication4.Migrations
             {
                 context.Types.Add(new TicketType { Type = "Bug" });
             }
+
         }
     }
 }

@@ -179,6 +179,7 @@
     <Compile Include="Models\helper\ProjectsIn.cs" />
     <Compile Include="Models\helper\RoleManagerBug.cs" />
     <Compile Include="Models\helper\TicketIn.cs" />
+    <Compile Include="Models\helper\Userhelp.cs" />
     <Compile Include="Models\helper\UserRoleAssignment.cs" />
     <Compile Include="Models\helper\UserRoleHelper.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -296,6 +297,7 @@
     <Folder Include="Views\TicketStatus\" />
     <Folder Include="Views\TicketType\" />
     <Folder Include="Views\Ticket\" />
+    <Folder Include="Views\Userhelp\" />
     <Folder Include="Views\UserRoleAssignment\" />
     <Folder Include="Views\UserRoleHelper\" />
   </ItemGroup>

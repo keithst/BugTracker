@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace WebApplication4.Models
 {
@@ -13,11 +14,26 @@ namespace WebApplication4.Models
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private IList<Projects> master;
 
         // GET: Projects
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            if(User.IsInRole("Admin"))
+            {
+                master = db.Projects.ToList();
+            }
+            if(User.IsInRole("ProjectManager") || User.IsInRole("Developer"))
+            {
+                var query = db.ProjectUsers.AsQueryable();
+                var queryt = db.Projects.AsQueryable();
+                var ids = query.Where(x => x.ProjectUserId == User.Identity.GetUserId()).Select(x => x.ProjectId);
+                foreach(var id in ids)
+                {
+                    master = master.Union(queryt.Where(x => x.Id == id)).ToList();
+                }
+            }
+            return View(master);
         }
 
         // GET: Projects/Details/5

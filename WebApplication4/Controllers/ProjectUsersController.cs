@@ -7,12 +7,14 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication4.Models;
+using WebApplication4.Models.helper;
 
 namespace WebApplication4.Controllers
 {
     public class ProjectUsersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private Userhelp user = new Userhelp();
 
         // GET: ProjectUsers
         public ActionResult Index()
@@ -38,7 +40,8 @@ namespace WebApplication4.Controllers
         // GET: ProjectUsers/Create
         public ActionResult Create()
         {
-            return View();
+            user.users = new SelectList(db.Users, "UserName", "UserName");
+            return View(user);
         }
 
         // POST: ProjectUsers/Create
