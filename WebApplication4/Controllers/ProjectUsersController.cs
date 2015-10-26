@@ -68,7 +68,7 @@ namespace WebApplication4.Controllers
                 projectUsers.ProjectUserId = id;
                 db.ProjectUsers.Add(projectUsers);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Projects", new { id = projectUsers.ProjectId });
             }
 
             return View(projectUsers);

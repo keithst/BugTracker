@@ -23,11 +23,11 @@
 <p>
     @if(User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
     { 
-    @Html.ActionLink("Add User", "Create", "ProjectUsers", new { id = Model.Id }, null) |
+    @Html.ActionLink("Add User", "Create", "ProjectUsers", new { id = Model.Id }, null) @:|
     }
     @if(User.IsInRole("Admin"))
     {
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) @:|
     }
     @Html.ActionLink("Back to List", "Index")
 </p>
