@@ -14,7 +14,7 @@ namespace WebApplication4.Models
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private IList<Projects> master;
+        private IList<Projects> master = new List<Projects>();
 
         // GET: Projects
         public ActionResult Index()
@@ -31,7 +31,7 @@ namespace WebApplication4.Models
                 var ids = query.Where(x => x.ProjectUserId == idin).Select(x => x.ProjectId).ToList();
                 foreach(var id in ids)
                 {
-                    master = queryt.Union(queryt.Where(x => x.Id == id)).ToList();
+                    master = master.Union(queryt.Where(x => x.Id == id)).ToList();
                 }
             }
             return View(master);
