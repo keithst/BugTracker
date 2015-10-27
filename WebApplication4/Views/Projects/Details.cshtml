@@ -1,4 +1,4 @@
-﻿@model WebApplication4.Models.Projects
+﻿@model WebApplication4.Models.helper.ProjectDetails
 
 @{
     ViewBag.Title = "Details";
@@ -11,23 +11,51 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Project)
+            @Html.DisplayNameFor(model => model.projectin.Project)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Project)
+            @Html.DisplayFor(model => model.projectin.Project)
         </dd>
 
     </dl>
+    <br />
+    <div class="row">
+        <div class="col-xs-2">
+            Project Users
+        </div>
+        <div class="col-xs-10">
+            User Roles in Project
+        </div>
+    </div>
+    <hr />
+    @foreach(var username in Model.usersin)
+    {
+        @:<div class="row">
+        @:<div class="col-xs-2">
+        @:@username.UserName
+        @:</div>
+        @:<div class="col-xs-10">
+        @:<ul class="list-inline">
+        var rolein = Model.helper.ListUserRoles(username.Id);
+        foreach (var userrole in rolein)
+        {
+            @:<li>@userrole</li>
+        }
+        @:</ul>
+        @:</div>
+        @:</div>
+    }
 </div>
+<br />
 <p>
     @if(User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
     { 
-    @Html.ActionLink("Add User", "Create", "ProjectUsers", new { id = Model.Id }, null) @:|
+    @Html.ActionLink("Add User", "Edit", "Projects", new { id = Model.projectin.Id }, null) @:|
     }
     @if(User.IsInRole("Admin"))
     {
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) @:|
+    @Html.ActionLink("Edit", "Edit", new { id = Model.projectin.Id }) @:|
     }
     @Html.ActionLink("Back to List", "Index")
 </p>

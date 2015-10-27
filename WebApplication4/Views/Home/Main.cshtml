@@ -17,7 +17,7 @@
                         <li class="active"> <a href="#"><i class="glyphicon glyphicon-home"></i> Home</a></li>
                         <li><a href="#"><i class="glyphicon glyphicon-envelope"></i> Messages <span class="badge badge-info">4</span></a></li>
                         <li><a href="#"><i class="glyphicon glyphicon-cog"></i> Options</a></li>
-                        @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer"))
                         {
                             <li><a href="@Url.Action("Index", "Projects")"><i class="glyphicon glyphicon-user"></i> Project List</a></li>
                         }
@@ -40,7 +40,7 @@
                     </ul>
                         <form action="@Url.Action("LogOff", "Account")" method="post" class="formalign">
                             @Html.AntiForgeryToken()
-                            <button type="submit" class=""><i class="glyphicon glyphicon-off"></i> Logout</button>>
+                            <button type="submit" class=""><i class="glyphicon glyphicon-off"></i> Logout</button>
                         </form>
                 </li>
                 <li class="nav-header">

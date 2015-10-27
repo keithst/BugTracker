@@ -8,8 +8,8 @@ namespace WebApplication4.Models.helper
 {
     public class Userhelp
     {
-        public SelectList users { get; set; }
+        public MultiSelectList users { get; set; }
         public string user { get; set; }
-        public int pid { get; set; }
+        public Projects pid { get; set; }
     }
 }

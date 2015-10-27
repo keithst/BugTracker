@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using WebApplication4.Models.helper;
 
 namespace WebApplication4.Models
 {
@@ -15,6 +16,9 @@ namespace WebApplication4.Models
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private IList<Projects> master = new List<Projects>();
+        private ProjectDetails detail = new ProjectDetails();
+        private Userhelp user = new Userhelp();
+        private UserRoleHelper helpin = new UserRoleHelper();
 
         // GET: Projects
         public ActionResult Index()
@@ -45,11 +49,23 @@ namespace WebApplication4.Models
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Projects projects = db.Projects.Find(id);
+            IList<string> tempid = db.ProjectUsers.Where(x => x.ProjectId == id).Select(y => y.ProjectUserId).ToList();
+            IList<ApplicationUser> selected = new List<ApplicationUser>();
+            foreach(var ids in tempid)
+            {
+                var query = db.Users.AsQueryable();
+                selected = selected.Union(query.Where(x => x.Id == ids)).ToList();
+                    
+            }
+
             if (projects == null)
             {
                 return HttpNotFound();
             }
-            return View(projects);
+            detail.projectin = projects;
+            detail.usersin = selected;
+            detail.helper = helpin;
+            return View(detail);
         }
 
         // GET: Projects/Create
@@ -87,7 +103,30 @@ namespace WebApplication4.Models
             {
                 return HttpNotFound();
             }
-            return View(projects);
+
+            IList<string> tempid = db.ProjectUsers.Where(x => x.ProjectId == id).Select(y => y.ProjectUserId).ToList();
+            IList<string> selected = new List<string>();
+            foreach (var ids in tempid)
+            {
+                var query = db.Users.AsQueryable();
+                selected = selected.Union(query.Where(x => x.Id == ids).Select(y => y.UserName)).ToList();
+
+            }
+            if (User.IsInRole("Admin"))
+            {
+                var userinput = helpin.UsersInRole("ProjectManager");
+                var userinput2 = helpin.UsersInRole("Developer");
+                userinput = userinput.Union(userinput2).ToList();
+                user.users = new MultiSelectList(userinput, "UserName", "UserName", selected);
+            }
+            if (User.IsInRole("ProjectManager"))
+            {
+                var developers = helpin.UsersInRole("Developer");
+                user.users = new MultiSelectList(developers, "UserName", "UserName", selected);
+            }
+            user.pid = projects;
+
+            return View(user);
         }
 
         // POST: Projects/Edit/5
@@ -95,10 +134,28 @@ namespace WebApplication4.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Project")] Projects projects)
+        public ActionResult Edit([Bind(Include = "Id,Project")] Projects projects, int Id, string Project, string[] User)
         {
             if (ModelState.IsValid)
             {
+                ProjectUsers projectUsers = new ProjectUsers();
+                var query = db.ProjectUsers.Where(x => x.ProjectId == Id);
+                foreach (var delete in query)
+                {
+                    db.ProjectUsers.Remove(delete);
+                }
+                if(User != null)
+                {
+                    foreach (var useradd in User)
+                    {
+                        var id = db.Users.Where(x => x.UserName == useradd).Select(y => y.Id).Single();
+                        projectUsers.ProjectUserId = id;
+                        projectUsers.ProjectId = Id;
+                        db.ProjectUsers.Add(projectUsers);
+                    }
+                }
+                projects.Id = Id;
+                projects.Project = Project;
                 db.Entry(projects).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

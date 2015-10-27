@@ -12,15 +12,8 @@ namespace WebApplication4.Models
         public int ProjectId { get; set; }
         public string ProjectUserId { get; set; }
 
-        public ProjectUsers()
-        {
-            this.Project = new HashSet<Projects>();
-            this.ProjectUser = new HashSet<ApplicationUser>();
-        }
-
-        public virtual ICollection<Projects> Project { get; set; }
-        public virtual ICollection<ApplicationUser> ProjectUser { get; set; }
- 
+        public virtual Projects Project { get; set; }
+        public virtual ApplicationUser ProjectUser { get; set; }
 
     }
 }

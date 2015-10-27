@@ -42,16 +42,26 @@ namespace WebApplication4.Controllers
         // GET: ProjectUsers/Create
         public ActionResult Create(int id)
         {
+            IList<string> tempid = db.ProjectUsers.Where(x => x.ProjectId == id).Select(y => y.ProjectUserId).ToList();
+            IList<string> selected = new List<string>();
+            foreach(var ids in tempid)
+            {
+                var query = db.Users.AsQueryable();
+                selected = selected.Union(query.Where(x => x.Id == ids).Select(y => y.UserName)).ToList();
+                    
+            }
             if(User.IsInRole("Admin"))
             {
-                user.users = new SelectList(db.Users, "UserName", "UserName");
+                var userinput = helper.UsersInRole("ProjectManager");
+                var userinput2 = helper.UsersInRole("Developer");
+                userinput = userinput.Union(userinput2).ToList();
+                user.users = new MultiSelectList(userinput, "UserName", "UserName", selected);
             }
             if(User.IsInRole("ProjectManager"))
             {
                 var developers = helper.UsersInRole("Developer");
-                user.users = new SelectList(developers, "UserName", "UserName");
+                user.users = new MultiSelectList(developers, "UserName", "UserName", selected);
             }
-            user.pid = id;
             return View(user);
         }
 
@@ -60,13 +70,16 @@ namespace WebApplication4.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProjectId,ProjectUserId")] ProjectUsers projectUsers, string User)
+        public ActionResult Create([Bind(Include = "Id,ProjectId,ProjectUserId")] ProjectUsers projectUsers, string[] User)
         {
             if (ModelState.IsValid)
             {
-                var id = db.Users.Where(x => x.UserName == User).Select(y => y.Id).Single();
-                projectUsers.ProjectUserId = id;
-                db.ProjectUsers.Add(projectUsers);
+                foreach(var useradd in User)
+                {
+                    var id = db.Users.Where(x => x.UserName == useradd).Select(y => y.Id).Single();
+                    projectUsers.ProjectUserId = id;
+                    db.ProjectUsers.Add(projectUsers);
+                }
                 db.SaveChanges();
                 return RedirectToAction("Details", "Projects", new { id = projectUsers.ProjectId });
             }

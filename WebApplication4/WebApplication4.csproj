@@ -176,6 +176,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\helper\ListboxTicket.cs" />
+    <Compile Include="Models\helper\ProjectDetails.cs" />
     <Compile Include="Models\helper\ProjectsIn.cs" />
     <Compile Include="Models\helper\RoleManagerBug.cs" />
     <Compile Include="Models\helper\TicketIn.cs" />
@@ -287,6 +288,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\ListboxTicket\" />
+    <Folder Include="Views\ProjectDetails\" />
     <Folder Include="Views\ProjectsIn\" />
     <Folder Include="Views\ProjectsUsers\" />
     <Folder Include="Views\RoleManager\" />

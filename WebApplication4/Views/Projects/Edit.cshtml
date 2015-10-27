@@ -1,4 +1,4 @@
-﻿@model WebApplication4.Models.Projects
+﻿@model WebApplication4.Models.helper.Userhelp
 
 @{
     ViewBag.Title = "Edit";
@@ -14,15 +14,17 @@
         <h4>Projects</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.pid.Id, new { Name = "Id" })
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Project, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.pid.Project, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Project, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Project, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.pid.Project, new { htmlAttributes = new { @class = "form-control", Name = "Project" } })
+                @Html.ValidationMessageFor(model => model.pid.Project, "", new { @class = "text-danger" })
             </div>
         </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ListBoxFor(x => x.user, Model.users, new { Name = "User" })
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
