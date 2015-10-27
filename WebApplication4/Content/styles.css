@@ -6,6 +6,69 @@
     border-color: #A8A8A0;
 }
 
+.Critical {
+    color: red;
+}
+
+.High {
+    color: orange;
+}
+
+.Medium {
+    color: yellow;
+}
+
+.Low {
+    color: green;
+}
+
+.bgticketheader {
+    background-color: #428bca;
+}
+
+.bgticketbody {
+    background-color: #FFFFC2;
+}
+
+.margintext {
+    margin-right: -10px;
+}
+
+.black {
+    color: #000000;
+    text-decoration: none;
+}
+
+.ticketborderbtm {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #000000;
+}
+
+.ticketborder {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #000000;
+}
+
+.boxshadowticket {
+    box-shadow: 2px 2px 3px 2px rgba(0,0,0,0.6);
+}
+
+.ticketbordertop {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.ticketbordertophdr {
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+}
+
+.tickerheader {
+    color: #FFFFFF;
+}
+
 .navbar-static-top {
   margin-bottom:20px;
 }

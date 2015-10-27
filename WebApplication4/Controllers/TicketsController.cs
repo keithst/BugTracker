@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using WebApplication4.Models.helper;
+using PagedList;
 
 namespace WebApplication4.Models
 {
@@ -15,13 +16,17 @@ namespace WebApplication4.Models
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private TicketIn tickets = new TicketIn();
+        private IPagedList<Ticket> masterlist;
 
         // GET: Tickets
         [Authorize]
-        public ActionResult Index()
+        public ActionResult Index(Nullable<int> page)
         {
+            int pageSize = 25;
+            int pageNumber = (page ?? 1);
             var tickets = db.Tickets.Include(t => t.Assigned).Include(t => t.Owner).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            return View(tickets.ToList());
+            masterlist = tickets.OrderBy(x => x.Id).ToPagedList(pageNumber, pageSize);
+            return View(masterlist);
         }
 
         // GET: Tickets/Details/5

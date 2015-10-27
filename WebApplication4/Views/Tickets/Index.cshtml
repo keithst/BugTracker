@@ -1,4 +1,6 @@
-﻿@model IEnumerable<WebApplication4.Models.Ticket>
+﻿@using PagedList
+@using PagedList.Mvc
+@model IPagedList<WebApplication4.Models.Ticket>
 
 @{
     ViewBag.Title = "Index";
@@ -9,73 +11,44 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            Assigned
-        </th>
-        <th>
-            Owner
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Project.Project)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketPriority.Priority)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketStatus.Status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketType.Type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Created)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Assigned.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Owner.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Project.Project)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketPriority.Priority)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketStatus.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketType.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+@foreach (var item in Model)
+{
+    <div class="row">
+        <a href="@Url.Action("Details", "Tickets", new { id = item.Id })">
+            <div class="col-xs-9 ticketborder ticketbordertop boxshadowticket">
+                <div class="row bgticketheader ticketbordertophdr ticketborderbtm">
+                    <div class="col-xs-10">
+                        <h4 class="tickerheader">@item.Title</h4>
+                    </div>
+                    <div class="col-xs-2">
+                        <h4 class="tickerheader">Id: @item.Id</h4>
+                    </div>
+                </div>
+                <div class="row ticketborderbtm bgticketbody">
+                    <div class="col-xs-6">
+                        <p class="black">Created: @item.Created</p>
+                    </div>
+                    <div class="col-xs-6">
+                    </div>
+                </div>
+                <div class="row bgticketbody">
+                    <div class="col-xs-12">
+                        <ul class="list-inline">
+                            <li class="black margintext">Priority:</li>
+                            <li><b class="@item.TicketPriority.Priority">@item.TicketPriority.Priority</b></li>
+                            <li class="black margintext">Status:</li>
+                            <li class="black"><b>@item.TicketStatus.Status</b></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <br />
 }
-
-</table>
+@if (Model.PageCount > 1)
+{
+    @:Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, ViewBag.search }))
+}
