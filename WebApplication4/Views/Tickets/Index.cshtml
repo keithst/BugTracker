@@ -15,14 +15,14 @@
 @foreach (var item in Model)
 {
     <div class="row">
-        <a href="@Url.Action("Details", "Tickets", new { id = item.Id })">
-            <div class="col-xs-9 ticketborder ticketbordertop boxshadowticket">
+        <div class="col-xs-9 ticketborder ticketbordertop boxshadowticket">
+            <a href="@Url.Action("Details", "Tickets", new { id = item.Id })" class="nolink">
                 <div class="row bgticketheader ticketbordertophdr ticketborderbtm">
                     <div class="col-xs-10">
                         <h4 class="tickerheader">@item.Title</h4>
                     </div>
                     <div class="col-xs-2">
-                        <h4 class="tickerheader">Id: @item.Id</h4>
+                        <h4 class="tickerheader">Ticket #@item.Id</h4>
                     </div>
                 </div>
                 <div class="row ticketborderbtm bgticketbody">
@@ -32,18 +32,23 @@
                     <div class="col-xs-6">
                     </div>
                 </div>
-                <div class="row bgticketbody">
+                <div class="row bgticketbody ticketborderbtm">
                     <div class="col-xs-12">
-                        <ul class="list-inline">
-                            <li class="black margintext">Priority:</li>
-                            <li><b class="@item.TicketPriority.Priority">@item.TicketPriority.Priority</b></li>
-                            <li class="black margintext">Status:</li>
-                            <li class="black"><b>@item.TicketStatus.Status</b></li>
+                        <ul class="betterul">
+                            <li class="black margintext inlineli">Priority: </li>
+                            <li class="inlineli"><b class="@item.TicketPriority.Priority">@item.TicketPriority.Priority</b></li>
+                            <li class="black margintext inlineli">Status: </li>
+                            <li class="black inlineli"><b>@item.TicketStatus.Status</b></li>
                         </ul>
                     </div>
                 </div>
+            </a>
+            <div class="row">
+                <div class="col-xs-12">
+                    <a href="@Url.Action("Edit", "Tickets", new { id = item.Id})">Edit</a>
+                </div>
             </div>
-        </a>
+        </div>
     </div>
     <br />
 }

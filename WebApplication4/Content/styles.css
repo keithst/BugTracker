@@ -36,7 +36,21 @@
 
 .black {
     color: #000000;
-    text-decoration: none;
+}
+
+.betterul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0;
+}
+
+.inlineli {
+    display: inline;
+    padding-right: 10px;
+}
+
+.nolink {
+    text-decoration: none !important;
 }
 
 .ticketborderbtm {

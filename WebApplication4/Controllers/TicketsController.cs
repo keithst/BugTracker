@@ -22,7 +22,7 @@ namespace WebApplication4.Models
         [Authorize]
         public ActionResult Index(Nullable<int> page)
         {
-            int pageSize = 25;
+            int pageSize = 6;
             int pageNumber = (page ?? 1);
             var tickets = db.Tickets.Include(t => t.Assigned).Include(t => t.Owner).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
             masterlist = tickets.OrderBy(x => x.Id).ToPagedList(pageNumber, pageSize);
