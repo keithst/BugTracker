@@ -1,9 +1,8 @@
-﻿@using PagedList
-@using PagedList.Mvc
-@model IPagedList<WebApplication4.Models.Ticket>
+﻿@model WebApplication4.Models.helper.TicketIndex
 
 @{
     ViewBag.Title = "Index";
+    var title = Model.tickets.FirstOrDefault();
 }
 
 <h2>Index</h2>
@@ -11,49 +10,88 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<table id="table1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(x => title.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.TicketPriority)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.TicketStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.Owner)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.Assigned)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.Project)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.TicketType)
+            </th>
+        </tr>
+            @foreach (var item in Model.tickets)
+            {
+                var checkit = Model.helper.UserisOwnerorAssigned(item.Id, Model.accessin);
+                if (checkit != null)
+                {
+                    if (User.IsInRole("Admin") || checkit.ownerconfirmed || checkit.isinproject || checkit.assignconfirmed)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(x => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.Created)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.TicketPriority.Priority)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.TicketStatus.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.Owner.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.Assigned.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.Project.Project)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.TicketType.Type)
+                        </td>
+                    </tr>
+                    }
+                }
+            }
+    </thead>
+</table>
 
-@foreach (var item in Model)
-{
-    <div class="row">
-        <div class="col-xs-9 ticketborder ticketbordertop boxshadowticket">
-            <a href="@Url.Action("Details", "Tickets", new { id = item.Id })" class="nolink">
-                <div class="row bgticketheader ticketbordertophdr ticketborderbtm">
-                    <div class="col-xs-10">
-                        <h4 class="tickerheader">@item.Title</h4>
-                    </div>
-                    <div class="col-xs-2">
-                        <h4 class="tickerheader">Ticket #@item.Id</h4>
-                    </div>
-                </div>
-                <div class="row ticketborderbtm bgticketbody">
-                    <div class="col-xs-6">
-                        <p class="black">Created: @item.Created</p>
-                    </div>
-                    <div class="col-xs-6">
-                    </div>
-                </div>
-                <div class="row bgticketbody ticketborderbtm">
-                    <div class="col-xs-12">
-                        <ul class="betterul">
-                            <li class="black margintext inlineli">Priority: </li>
-                            <li class="inlineli"><b class="@item.TicketPriority.Priority">@item.TicketPriority.Priority</b></li>
-                            <li class="black margintext inlineli">Status: </li>
-                            <li class="black inlineli"><b>@item.TicketStatus.Status</b></li>
-                        </ul>
-                    </div>
-                </div>
-            </a>
-            <div class="row">
-                <div class="col-xs-12">
-                    <a href="@Url.Action("Edit", "Tickets", new { id = item.Id})">Edit</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br />
-}
-@if (Model.PageCount > 1)
-{
-    @:Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, ViewBag.search }))
+@section scripts{
+    <script>
+    $(document).ready(function(){
+        $("#table1").DataTable();})
+    </script>
 }

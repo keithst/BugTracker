@@ -16,17 +16,22 @@ namespace WebApplication4.Models
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private TicketIn tickets = new TicketIn();
-        private IPagedList<Ticket> masterlist;
+        private TicketIndex indexinput = new TicketIndex();
+        private UserAccess helper = new UserAccess();
 
         // GET: Tickets
         [Authorize]
-        public ActionResult Index(Nullable<int> page)
+        public ActionResult Index()
         {
-            int pageSize = 6;
-            int pageNumber = (page ?? 1);
-            var tickets = db.Tickets.Include(t => t.Assigned).Include(t => t.Owner).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            masterlist = tickets.OrderBy(x => x.Id).ToPagedList(pageNumber, pageSize);
-            return View(masterlist);
+            var ticketdb = db.Tickets.Include(t => t.Assigned).Include(t => t.Owner).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
+            indexinput.tickets = ticketdb.OrderBy(x => x.Id).ToList();
+
+            var idin = User.Identity.GetUserId();
+            indexinput.accessin = helper.UserisOwnerorAssigned(idin, indexinput.tickets);
+            indexinput.helper = helper;
+
+            return View(indexinput);
+            
         }
 
         // GET: Tickets/Details/5
