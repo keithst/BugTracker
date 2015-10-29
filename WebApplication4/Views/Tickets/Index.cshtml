@@ -41,12 +41,13 @@
                 @Html.DisplayNameFor(x => title.Project)
             </th>
             <th>
-                @Html.DisplayNameFor(x => title.TicketType)
+                Actions
             </th>
         </tr>
+    </thead>
             @foreach (var item in Model.tickets)
             {
-                var checkit = Model.helper.UserisOwnerorAssigned(item.Id, Model.accessin);
+                var checkit = Model.helper.UserisOwnerorAssignedEntry(item.Id, Model.accessin);
                 if (checkit != null)
                 {
                     if (User.IsInRole("Admin") || checkit.ownerconfirmed || checkit.isinproject || checkit.assignconfirmed)
@@ -62,7 +63,9 @@
                             @Html.DisplayFor(x => item.Created)
                         </td>
                         <td>
-                            @Html.DisplayFor(x => item.TicketPriority.Priority)
+                            <b class="@item.TicketPriority.Priority">
+                                @Html.DisplayFor(x => item.TicketPriority.Priority)
+                            </b>
                         </td>
                         <td>
                             @Html.DisplayFor(x => item.TicketStatus.Status)
@@ -80,13 +83,16 @@
                             @Html.DisplayFor(x => item.Project.Project)
                         </td>
                         <td>
-                            @Html.DisplayFor(x => item.TicketType.Type)
+                            <a href="@Url.Action("Details", "Tickets", new { id = item.Id })">Details</a><br />
+                            @if(User.IsInRole("Admin") || User.IsInRole("Developer") || User.IsInRole("ProjectManager"))
+                            { 
+                                <a href="@Url.Action("Edit", "Tickets", new { id = item.Id, modelin = Model })">Edit</a>
+                            }
                         </td>
                     </tr>
                     }
                 }
             }
-    </thead>
 </table>
 
 @section scripts{

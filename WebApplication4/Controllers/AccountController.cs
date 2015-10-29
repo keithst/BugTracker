@@ -12,6 +12,7 @@ using WebApplication4.Models;
 using WebApplication4.Models.helper;
 using System.Collections.Generic;
 using System.Collections;
+using System.Net;
 
 namespace WebApplication4.Controllers
 {
@@ -19,7 +20,7 @@ namespace WebApplication4.Controllers
     public class AccountController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private RoleManagerBug masterlist = new RoleManagerBug();
+        private UserRoleAssignment assign = new UserRoleAssignment();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -410,45 +411,45 @@ namespace WebApplication4.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult UserRolePage()
         {
-            return View(masterlist);
+            assign.master = db.Users.OrderBy(g => g.LastName).OrderBy(p => p.FirstName).ToList();
+            UserRoleHelper helper = new UserRoleHelper();
+            assign.helper = helper;
+            return View(assign);
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public ActionResult UserRolePage(string FirstName, string LastName, string UserName, string id)
+        public ActionResult UserRolePageSub(string id)
         {
-                var queryUsers = db.Users.AsQueryable();
-                masterlist.master = queryUsers.OrderByDescending(g => g.LastName).OrderByDescending(p => p.FirstName).ToList();
-                UserRoleHelper helper = new UserRoleHelper();
-
-            if (!string.IsNullOrWhiteSpace(id))
+            if (id == null)
             {
-                var finduser = db.Users.Find(id);
-                UserRoleAssignment RoleModel = new UserRoleAssignment();
-                var selected = helper.ListUserRoles(id);
-                RoleModel.RoleInput = new MultiSelectList(db.Roles, "Name", "Name", selected);
-                RoleModel.User = finduser;
-                masterlist.RoleIn = RoleModel;
-                masterlist.master = null;
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            masterlist.helperin = helper;
-            return View(masterlist);
+            assign.User = db.Users.Find(id);
+            UserRoleHelper helper = new UserRoleHelper();
+            var selected = helper.ListUserRoles(id);
+            assign.RoleInput = new MultiSelectList(db.Roles, "Name", "Name", selected);
+            if (assign.User == null)
+            {
+                return HttpNotFound();
+            }
+            return View(assign);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult UserRolePage(string id, string Username, string[] Roles)
+        public ActionResult UserRolePageSub(string id, string Username, string[] Roles)
         {
             UserRoleHelper helper = new UserRoleHelper();
             IList<string> temp = helper.ListUserRoles(id);
             var remove = true;
+            IList<string> response = new List<string>();
             foreach(var item in Roles)
             {
                 if(!helper.IsUserInRole(id, item))
                 {
                     helper.AddUserToRole(id, item);
-                    masterlist.response += "Added Role " + item + " to User " + Username + "&";
+                    response.Add("Added Role " + item + " to User " + Username);
                 }
             }
             foreach(var tempitem in temp)
@@ -464,11 +465,15 @@ namespace WebApplication4.Controllers
                 if(remove)
                 {
                     helper.RemoveUserFromRole(id, tempitem);
-                    masterlist.response += "Removed Role " + tempitem + " from User " + Username + "&";
+                    response.Add("Removed Role " + tempitem + " from User " + Username);
                 }
             }
+            assign.User = db.Users.Find(id);
+            var selected = helper.ListUserRoles(id);
+            assign.RoleInput = new MultiSelectList(db.Roles, "Name", "Name", selected);
+            assign.response = response;
 
-            return View(masterlist);
+            return View(assign);
         }
 
         public ActionResult ChangeUserName()

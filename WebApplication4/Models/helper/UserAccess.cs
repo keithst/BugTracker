@@ -60,7 +60,7 @@ namespace WebApplication4.Models.helper
 
         }
 
-        public UserTicketList UserisOwnerorAssigned(int id, IList<UserTicketList> tickets)
+        public UserTicketList UserisOwnerorAssignedEntry(int id, IList<UserTicketList> tickets)
         {
             foreach(var item in tickets)
             {

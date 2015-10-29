@@ -186,7 +186,7 @@
     <Compile Include="Models\helper\ListboxTicket.cs" />
     <Compile Include="Models\helper\ProjectDetails.cs" />
     <Compile Include="Models\helper\ProjectsIn.cs" />
-    <Compile Include="Models\helper\RoleManagerBug.cs" />
+    <Compile Include="Models\helper\TicketDetails.cs" />
     <Compile Include="Models\helper\TicketIn.cs" />
     <Compile Include="Models\helper\TicketIndex.cs" />
     <Compile Include="Models\helper\UserAccess.cs" />
@@ -443,6 +443,7 @@
     <Content Include="Views\ProjectUsers\Edit.cshtml" />
     <Content Include="Views\ProjectUsers\Index.cshtml" />
     <Content Include="Views\Account\ChangeUserName.cshtml" />
+    <Content Include="Views\Account\UserRolePageSub.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -453,6 +454,7 @@
     <Folder Include="Views\RoleManager\" />
     <Folder Include="Views\TicketAttach\" />
     <Folder Include="Views\TicketComments\" />
+    <Folder Include="Views\TicketEdit\" />
     <Folder Include="Views\TicketHistory\" />
     <Folder Include="Views\TicketIndex\" />
     <Folder Include="Views\TicketIn\" />

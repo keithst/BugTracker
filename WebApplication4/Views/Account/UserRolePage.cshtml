@@ -1,125 +1,64 @@
-﻿@using WebApplication4.Models.helper;
-@model RoleManagerBug
+﻿@model WebApplication4.Models.helper.UserRoleAssignment
 @{
     ViewBag.Title = "UserRolePage";
+    var title = Model.master.FirstOrDefault();
 }
-@if (Model.RoleIn == null && Model.response == null)
-{
 <h3>Search for Users</h3>
-<form action="@Url.Action("UserRolePage")" method="get" class="formalign">
-    <ul class="list-inline">
-        <li>
-            First Name:
-        </li>
-        <li>
-            <input type="text" id="FirstName" name="FirstName" />
-        </li>
-        <li>
-            Last Name:
-        </li>
-        <li>
-            <input type="text" id="LastName" name="LastName" />
-        </li>
-        <li>
-            User Name:
-        </li>
-        <li>
-            <input type="text" id="UserName" name="UserName" />
-        </li>
-        <li>
-            <button type="submit" class="btn btn-primary">Search</button>
-        </li>
-    </ul><br />
-</form>
-<br />
-}
-    @if (Model.master != null)
-    {
-        if (Model.master.Count > 0)
+    <table id="table1">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(x => title.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(x => title.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(x => title.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(x => title.Roles)
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        @if (Model != null)
         {
-            @:<h3>Search Results</h3>
-            @:<hr class="hrcolor" />
-            foreach (var user in Model.master)
+            foreach(var user in Model.master)
             {
-                @:<form action="@Url.Action("UserRolePage")" method="get" class="formalign" target="_blank">
-                    @:<div class="row">
-                    @:<div class="col-xs-10">
-                    @:<ul class="list-inline">
-                        @:<li>
-                            @:Name:
-                        @:</li>
-                        @:<li>
-                            @Html.Raw(user.FirstName + " " + user.LastName)
-                        @:</li>
-                        @:<li>
-                            @:|
-                        @:</li>
-                        @:<li>
-                            @:Roles:
-                        @:</li>
-                        @:<li>
-                            var roled = Model.helperin.ListUserRoles(user.Id);
-                            var counter = roled.Count();
-                            foreach (var role in roled)
+                <tr>
+                    <td>
+                        @Html.DisplayFor(x => user.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => user.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => user.UserName)
+                    </td>
+                    <td>
+                        @{
+                            var roles = Model.helper.ListUserRoles(user.Id);
+                            foreach(var item in roles)
                             {
-                                if(counter > 1)
-                                {
-                                    @:@Html.Raw(role + ", ")
-                                    counter--;    
-                                }
-                                else
-                                {
-                                    @:@Html.Raw(role)
-                                }
+                                @:@item<br />
                             }
-                        @:</li>
-                        @:<li>
-                            @:|
-                        @:</li>
-                        @:<li>
-                            @:User Name:
-                        @:</li>
-                        @:<li>
-                            @Html.Raw(user.UserName)
-                        @:</li>
-                    @:</ul>
-                    @:</div>
-                        @:<div class="col-xs-2">
-                            @:<input name="id" value="@user.Id" hidden />
-                            @:<button type="submit" class="btn btn-primary">Select User</button>
-                        @:</div>
-                    @:</div>
-                @:</form>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("UserRolePageSub", "Account", new { id = user.Id })">Modify Roles</a>
+                    </td>
+                </tr>
             }
         }
-        else
-        {
-            @:No users to display
-        }
+    </table>
+    
+    @section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#table1").DataTable();
+        })
+    </script>
     }
-    @if (Model.RoleIn != null)
-    {
-        @:<h3>Assign Roles for User</h3>
-        @:<hr class="hrcolor" />
-        @:<form action="@Url.Action("UserRolePage")" method="post" class="formalign">
-            @Html.AntiForgeryToken()
-            @:<h4>@Html.Raw(Model.RoleIn.User.UserName)</h4>
-            @:<input name="id" value="@Model.RoleIn.User.Id" hidden />
-            @:<input name="Username" value="@Model.RoleIn.User.UserName" hidden />
-            @:@Html.ListBoxFor(x => x.RoleIn.Roles, Model.RoleIn.RoleInput, new { Name = "Roles" })<br /><br />
-            @:<button type="submit" class="btn btn-primary">Change User Roles</button>
-        @:</form><br /><br />
-        @:<button onclick="closeTab()" class="btn btn-primary">Close</button>
-    }
-    @if (Model.response != null)
-    {
-        @:<h3>Actions Performed</h3>
-        @:<hr class="hrcolor" />
-        string[] parse = Model.response.Split('&');
-        foreach(var resp in parse)
-        {
-            @:@Html.Raw(resp)<br />
-        }
-        @:<button onclick="closeTab()" class="btn btn-primary">Close</button>
-    }
-    <script src="~/Scripts/UserRolePage.js"></script>
