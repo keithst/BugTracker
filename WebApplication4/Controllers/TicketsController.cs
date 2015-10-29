@@ -18,6 +18,8 @@ namespace WebApplication4.Models
         private TicketIn tickets = new TicketIn();
         private TicketIndex indexinput = new TicketIndex();
         private UserAccess helper = new UserAccess();
+        private TicketDetails ticketd = new TicketDetails();
+        private IList<ApplicationUser> userassign = new List<ApplicationUser>();
 
         // GET: Tickets
         [Authorize]
@@ -120,13 +122,19 @@ namespace WebApplication4.Models
             {
                 return HttpNotFound();
             }
-            ViewBag.AssignedId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedId);
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerId);
+            var query = db.ProjectUsers.Where(x => x.Project.Project == ticket.Project.Project).ToList();
+            foreach(var item in query)
+            {
+                var user = db.Users.Where(x => x.Id == item.ProjectUserId).Single();
+                userassign.Add(user);
+            }
+            ticketd.ticketassign = new SelectList(userassign, "UserName", "UserName");
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Project", ticket.ProjectId);
             ViewBag.TicketPriorityId = new SelectList(db.Priorities, "Id", "Priority", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.Status, "Id", "Status", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.Types, "Id", "Type", ticket.TicketTypeId);
-            return View(ticket);
+            ticketd.ticketdetails = ticket;
+            return View(ticketd);
         }
 
         // POST: Tickets/Edit/5
@@ -134,10 +142,12 @@ namespace WebApplication4.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerId,AssignedId")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerId,AssignedId")] Ticket ticket, string Assigned)
         {
             if (ModelState.IsValid)
             {
+                var user = db.Users.Where(x => x.UserName == Assigned).Single();
+                ticket.AssignedId = user.Id;
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

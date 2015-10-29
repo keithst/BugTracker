@@ -10,5 +10,6 @@ namespace WebApplication4.Models.helper
     {
         public Ticket ticketdetails { get; set; }
         public TicketIndex ticketindex { get; set; }
+        public SelectList ticketassign { get; set; }
     }
 }

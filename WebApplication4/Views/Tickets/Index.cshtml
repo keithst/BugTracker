@@ -84,7 +84,7 @@
                         </td>
                         <td>
                             <a href="@Url.Action("Details", "Tickets", new { id = item.Id })">Details</a><br />
-                            @if(User.IsInRole("Admin") || User.IsInRole("Developer") || User.IsInRole("ProjectManager"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || (User.IsInRole("Developer") && checkit.assignconfirmed))
                             { 
                                 <a href="@Url.Action("Edit", "Tickets", new { id = item.Id, modelin = Model })">Edit</a>
                             }
