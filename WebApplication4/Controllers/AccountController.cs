@@ -16,6 +16,7 @@ using System.Net;
 
 namespace WebApplication4.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class AccountController : Controller
     {

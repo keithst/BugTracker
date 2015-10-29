@@ -9,9 +9,11 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using WebApplication4.Models.helper;
 using PagedList;
+using System.IO;
 
 namespace WebApplication4.Models
 {
+    [RequireHttps]
     public class TicketsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -37,7 +39,7 @@ namespace WebApplication4.Models
         }
 
         // GET: Tickets/Details/5
-        public ActionResult Details(int? id, bool own, bool assign, bool inproject)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -49,13 +51,40 @@ namespace WebApplication4.Models
                 return HttpNotFound();
             }
             ticketd.ticketdetails = ticket;
-            UserTicketList accessinput = new UserTicketList();
-            accessinput.assignconfirmed = assign;
-            accessinput.ownerconfirmed = own;
-            accessinput.isinproject = inproject;
-            accessinput.ticketin = ticket.Id;
-            ticketd.accessin = accessinput;
+            ticketd.accessin = helper.UserisOwnerorAssignedSingle(User.Identity.GetUserId(), ticket);
             return View(ticketd);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Details([Bind(Include = "Id,Comment,AttachURL,Created,TicketId,CommentUserId")] TicketComments ticketcomment, int id, HttpPostedFileBase AttachURLin)
+        {
+            if (AttachURLin != null && AttachURLin.ContentLength > 0)
+            {
+                var ext = Path.GetExtension(AttachURLin.FileName).ToLower();
+                if (ext != ".png" && ext != ".jpg" && ext != ".jpeg"
+                    && ext != ".bmp" && ext != ".txt" && ext != ".pdf" && ext != ".rtf")
+                {
+                    ModelState.AddModelError("AttachURL", "Invalid Format.");
+                }
+            }
+            if (ModelState.IsValid)
+            {
+                if (AttachURLin != null)
+                {
+                    var filePath = "/Uploads/";
+                    var absPath = Server.MapPath("~" + filePath);
+                    Directory.CreateDirectory(absPath);
+                    ticketcomment.AttachURL = filePath + AttachURLin.FileName;
+                    AttachURLin.SaveAs(Path.Combine(absPath, AttachURLin.FileName));
+                }
+            }
+            ticketcomment.Created = System.DateTimeOffset.Now;
+            ticketcomment.TicketId = id;
+            ticketcomment.CommentUserId = User.Identity.GetUserId();
+            db.Comments.Add(ticketcomment);
+            db.SaveChanges();
+            return RedirectToAction("Details", id);
         }
 
         // GET: Tickets/Create

@@ -84,13 +84,13 @@
                             @Html.DisplayFor(x => item.Project.Project)
                         </td>
                         <td>
-                            <a href="@Url.Action("Details", "Tickets", new { id = item.Id, own = checkit.ownerconfirmed, assign = checkit.assignconfirmed, inproject = checkit.isinproject })">Details</a><br />
-                            @if (User.IsInRole("Admin") || (User.IsInRole("ProjectManager") && checkit.isinproject) ||
+                                <a href="@Url.Action("Details", "Tickets", new { id = item.Id })">Details</a><br />
+                                @if (User.IsInRole("Admin") || (User.IsInRole("ProjectManager") && checkit.isinproject) ||
                                 (User.IsInRole("Developer") && checkit.assignconfirmed) ||
                                 (User.IsInRole("Submitter") && checkit.ownerconfirmed))
-                            {
-                                <a href="@Url.Action("Edit", "Tickets", new { id = item.Id })">Edit</a>
-                            }
+                                {
+                                    <a href="@Url.Action("Edit", "Tickets", new { id = item.Id })">Edit</a>
+                                }
                         </td>
                     </tr>
                     }

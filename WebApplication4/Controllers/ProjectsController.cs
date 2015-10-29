@@ -11,6 +11,7 @@ using WebApplication4.Models.helper;
 
 namespace WebApplication4.Models
 {
+    [RequireHttps]
     [Authorize]
     public class ProjectsController : Controller
     {

@@ -60,6 +60,37 @@ namespace WebApplication4.Models.helper
 
         }
 
+        public UserTicketList UserisOwnerorAssignedSingle(string id, Ticket ticket)
+        {
+            var returninput = new UserTicketList();
+            returninput.ticketin = ticket.Id;
+            if (ticket.OwnerId == id)
+            {
+                returninput.ownerconfirmed = true;
+            }
+            else
+            {
+                returninput.ownerconfirmed = false;
+            }
+            if (ticket.AssignedId != null)
+            {
+                if (ticket.AssignedId == id)
+                {
+                    returninput.assignconfirmed = true;
+                }
+                else
+                {
+                    returninput.assignconfirmed = false;
+                }
+            }
+            else
+            {
+                returninput.assignconfirmed = false;
+            }
+            returninput.isinproject = this.UserinProject(id, ticket.Project.Project);
+            return returninput;
+        }
+
         public UserTicketList UserisOwnerorAssignedEntry(int id, IList<UserTicketList> tickets)
         {
             foreach(var item in tickets)

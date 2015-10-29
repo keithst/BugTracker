@@ -6,6 +6,12 @@
     border-color: #A8A8A0;
 }
 
+.attachments {
+    width: 200px;
+    height: 200px;
+    overflow: scroll;
+}
+
 .Critical {
     color: red;
 }

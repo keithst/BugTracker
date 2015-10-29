@@ -1,9 +1,19 @@
-﻿@model WebApplication4.Models.helper.TicketDetails
+﻿@using WebApplication4.Models
+@model WebApplication4.Models.helper.TicketDetails
 
 @{
     ViewBag.Title = "Details";
+    IList<string> attachements = new List<string>();
+    IList<TicketComments> commentlist = new List<TicketComments>();
 }
-
+@foreach (var item in Model.ticketdetails.TicketComments)
+{
+    if(item.AttachURL != null)
+    {
+        attachements.Add(item.AttachURL);
+    }
+    commentlist.Add(item);
+}
 <h2>Details</h2>
 
 <div>
@@ -84,6 +94,13 @@
 
     </dl>
 </div>
+<div class="attachments">
+    @foreach (var item in attachements)
+    {
+        var filename = item.Split('/');
+        <a href="@item" target="_blank">@filename.Last()</a>
+    }
+</div>
 <p>
     @if (User.IsInRole("Admin") || (User.IsInRole("ProjectManager") && Model.accessin.isinproject) ||
                                 (User.IsInRole("Developer") && Model.accessin.assignconfirmed) || 
@@ -94,8 +111,26 @@
     @Html.ActionLink("Back to List", "Index")
 </p>
 <div>
-    @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") ||
-        (User.IsInRole("Developer") && Model.accessin.assignconfirmed))
+    @if (User.IsInRole("Admin") || (User.IsInRole("ProjectManager") && Model.accessin.isinproject) ||
+                                (User.IsInRole("Developer") && Model.accessin.assignconfirmed) ||
+                                (User.IsInRole("Submitter") && Model.accessin.ownerconfirmed))
     {
+        <form action="@Url.Action("Details", "Tickets", new { id = Model.ticketdetails.Id })" method="post" class="formalign" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <textarea name="Comment" id="Comment" rows="3" cols="80"></textarea><br />
+            <input name="AttachURLin" type="file" class="form-control" id="fileUpload" /><br />
+            <button type="submit" class="btn btn-primary">Submit Comment</button>
+        </form>
+    }
+</div>
+<div>
+    @foreach(var item in commentlist)
+    {
+        @item.Comment
+        if(item.AttachURL != null)
+        {
+            var filename = item.AttachURL.Split('/');
+            <a href="@item.AttachURL" target="_blank">@filename.Last()</a>
+        }
     }
 </div>

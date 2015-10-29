@@ -8,6 +8,7 @@ using WebApplication4.Models.helper;
 
 namespace WebApplication4.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
