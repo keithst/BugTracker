@@ -186,6 +186,8 @@
     <Compile Include="Models\helper\ListboxTicket.cs" />
     <Compile Include="Models\helper\ProjectDetails.cs" />
     <Compile Include="Models\helper\ProjectsIn.cs" />
+    <Compile Include="Models\helper\ReportList.cs" />
+    <Compile Include="Models\helper\Reporthelper.cs" />
     <Compile Include="Models\helper\TicketDetails.cs" />
     <Compile Include="Models\helper\TicketIn.cs" />
     <Compile Include="Models\helper\TicketIndex.cs" />
@@ -444,6 +446,7 @@
     <Content Include="Views\ProjectUsers\Index.cshtml" />
     <Content Include="Views\Account\ChangeUserName.cshtml" />
     <Content Include="Views\Account\UserRolePageSub.cshtml" />
+    <Content Include="Views\Home\Report.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -451,6 +454,8 @@
     <Folder Include="Views\ProjectDetails\" />
     <Folder Include="Views\ProjectsIn\" />
     <Folder Include="Views\ProjectsUsers\" />
+    <Folder Include="Views\Reporthelper\" />
+    <Folder Include="Views\Report\" />
     <Folder Include="Views\RoleManager\" />
     <Folder Include="Views\TicketAttach\" />
     <Folder Include="Views\TicketComments\" />

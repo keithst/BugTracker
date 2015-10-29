@@ -19,11 +19,15 @@
                         <li><a href="#"><i class="glyphicon glyphicon-cog"></i> Options</a></li>
                         @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer"))
                         {
-                            <li><a href="@Url.Action("Index", "Projects")"><i class="glyphicon glyphicon-user"></i> Project List</a></li>
+                            <li><a href="@Url.Action("Report")"><i class="glyphicon glyphicon-user"></i>My Reports</a></li>
+                        }
+                        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer"))
+                        {
+                            <li><a href="@Url.Action("Index", "Projects")"><i class="glyphicon glyphicon-user"></i>My Project List</a></li>
                         }
                         @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
                         {
-                            <li><a href="@Url.Action("Index", "Tickets")"><i class="glyphicon glyphicon-user"></i> Ticket List</a></li>
+                            <li><a href="@Url.Action("Index", "Tickets")"><i class="glyphicon glyphicon-user"></i>My Ticket List</a></li>
                         }
                         @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
                         {
@@ -121,37 +125,7 @@
                         </a>
                     </div>
                     <hr>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>Reports</h4>
-                        </div>
-                        <div class="panel-body">
-                            <small>Success</small>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" style="width: 72%">
-                                    <span class="sr-only">72% Complete</span>
-                                </div>
-                            </div>
-                            <small>Info</small>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                    <span class="sr-only">20% Complete</span>
-                                </div>
-                            </div>
-                            <small>Warning</small>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                    <span class="sr-only">60% Complete (warning)</span>
-                                </div>
-                            </div>
-                            <small>Danger</small>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                    <span class="sr-only">80% Complete</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!--/panel-body-->
+                     <!--/panel-body-->
                     </div>
                 </div>
                 <!--/col-span-6-->

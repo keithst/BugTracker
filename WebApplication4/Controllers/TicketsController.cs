@@ -14,6 +14,7 @@ using System.IO;
 namespace WebApplication4.Models
 {
     [RequireHttps]
+    [Authorize]
     public class TicketsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -24,7 +25,6 @@ namespace WebApplication4.Models
         private IList<ApplicationUser> userassign = new List<ApplicationUser>();
 
         // GET: Tickets
-        [Authorize]
         public ActionResult Index()
         {
             var ticketdb = db.Tickets.Include(t => t.Assigned).Include(t => t.Owner).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);

@@ -10,22 +10,40 @@
     width: 200px;
     height: 200px;
     overflow: scroll;
+    overflow-x: auto;
+    overflow-y: auto;
 }
 
 .Critical {
     color: red;
 }
 
+.Criticalb {
+    background-color: red;
+}
+
 .High {
     color: orange;
+}
+
+.Highb {
+    background-color: orange;
 }
 
 .Medium {
     color: yellow;
 }
 
+.Mediumb {
+    background-color: yellow;
+}
+
 .Low {
     color: green;
+}
+
+.Lowb {
+    background-color: green;
 }
 
 .bgticketheader {

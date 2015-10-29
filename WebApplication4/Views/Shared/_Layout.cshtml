@@ -32,6 +32,7 @@
             <div class="navbar-right">
                 @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
                 {
+                    <b class="navbar-brand">Logged in as: @User.Identity.Name</b>
                     <form action="@Url.Action("LogOff", "Account")" method="post" class="formalign">
                         @Html.AntiForgeryToken()
                         <button type="submit"><i class="glyphicon glyphicon-lock"></i> Logout</button>

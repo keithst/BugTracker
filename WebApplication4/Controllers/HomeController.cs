@@ -12,7 +12,6 @@ namespace WebApplication4.Controllers
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private ProjectsIn Pin = new ProjectsIn();
         public ActionResult Index()
         {
             return View();
@@ -35,6 +34,14 @@ namespace WebApplication4.Controllers
         public ActionResult Main()
         {
             return View();
+        }
+
+        public ActionResult Report()
+        {
+            Reporthelper reporter = new Reporthelper();
+            IList<ReportList> reports = reporter.createreport(db.Priorities.ToList());
+            reporter.popreport(db.Tickets.ToList(), reports);
+            return View(reports);
         }
 
     }
