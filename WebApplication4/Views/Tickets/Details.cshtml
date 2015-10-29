@@ -1,4 +1,4 @@
-﻿@model WebApplication4.Models.Ticket
+﻿@model WebApplication4.Models.helper.TicketDetails
 
 @{
     ViewBag.Title = "Details";
@@ -11,80 +11,91 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Assigned.UserName)
+            @Html.DisplayNameFor(model => model.ticketdetails.Assigned.UserName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Assigned.UserName)
+            @Html.DisplayFor(model => model.ticketdetails.Assigned.UserName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Owner.UserName)
+            @Html.DisplayNameFor(model => model.ticketdetails.Owner.UserName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Owner.UserName)
+            @Html.DisplayFor(model => model.ticketdetails.Owner.UserName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Project.Project)
+            @Html.DisplayNameFor(model => model.ticketdetails.Project.Project)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Project.Project)
+            @Html.DisplayFor(model => model.ticketdetails.Project.Project)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TicketPriority.Priority)
+            @Html.DisplayNameFor(model => model.ticketdetails.TicketPriority.Priority)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TicketPriority.Priority)
+            @Html.DisplayFor(model => model.ticketdetails.TicketPriority.Priority)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TicketStatus.Status)
+            @Html.DisplayNameFor(model => model.ticketdetails.TicketStatus.Status)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TicketStatus.Status)
+            @Html.DisplayFor(model => model.ticketdetails.TicketStatus.Status)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TicketType.Type)
+            @Html.DisplayNameFor(model => model.ticketdetails.TicketType.Type)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TicketType.Type)
+            @Html.DisplayFor(model => model.ticketdetails.TicketType.Type)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.ticketdetails.Title)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Title)
+            @Html.DisplayFor(model => model.ticketdetails.Title)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.ticketdetails.Description)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.ticketdetails.Description)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Created)
+            @Html.DisplayNameFor(model => model.ticketdetails.Created)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Created)
+            @Html.DisplayFor(model => model.ticketdetails.Created)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @if (User.IsInRole("Admin") || (User.IsInRole("ProjectManager") && Model.accessin.isinproject) ||
+                                (User.IsInRole("Developer") && Model.accessin.assignconfirmed) || 
+                                (User.IsInRole("Submitter") && Model.accessin.ownerconfirmed))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ticketdetails.Id }) @:|
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>
+<div>
+    @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") ||
+        (User.IsInRole("Developer") && Model.accessin.assignconfirmed))
+    {
+    }
+</div>

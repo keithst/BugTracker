@@ -37,7 +37,7 @@ namespace WebApplication4.Models
         }
 
         // GET: Tickets/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, bool own, bool assign, bool inproject)
         {
             if (id == null)
             {
@@ -48,7 +48,14 @@ namespace WebApplication4.Models
             {
                 return HttpNotFound();
             }
-            return View(ticket);
+            ticketd.ticketdetails = ticket;
+            UserTicketList accessinput = new UserTicketList();
+            accessinput.assignconfirmed = assign;
+            accessinput.ownerconfirmed = own;
+            accessinput.isinproject = inproject;
+            accessinput.ticketin = ticket.Id;
+            ticketd.accessin = accessinput;
+            return View(ticketd);
         }
 
         // GET: Tickets/Create
