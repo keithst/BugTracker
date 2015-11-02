@@ -39,29 +39,101 @@ namespace WebApplication4.Controllers
             return View();
         }
 
-        public ActionResult Report()
+        public ActionResult Report(string role, string type)
         {
+            UserRoleHelper helperu = new UserRoleHelper();
             Reporthelper reporter = new Reporthelper();
+            ReportInput rp = new ReportInput();
             var dbin = db.Tickets.ToList();
-            IList<ReportList> reports = reporter.createreport(db.Priorities.ToList());
             IList<UserTicketList> access = helper.UserisOwnerorAssigned(User.Identity.GetUserId(), dbin);
-            if (User.IsInRole("Admin"))
+            var selectlist = helperu.ListUserRoles(User.Identity.GetUserId());
+            string selected = null;
+            if (string.IsNullOrWhiteSpace(type))
             {
-                reporter.popreport(dbin, reports);
+                if (string.IsNullOrWhiteSpace(role))
+                {
+                    IList<ReportList> reports = reporter.createreport(db.Priorities.ToList());
+                    if (User.IsInRole("Admin"))
+                    {
+                        reporter.popreport(dbin, reports);
+                        selected = "Admin";
+                    }
+                    if (User.IsInRole("ProjectManager"))
+                    {
+                        reporter.popreport(dbin, reports, access, false, false, true);
+                        selected = "ProjectManager";
+                    }
+                    if (User.IsInRole("Developer"))
+                    {
+                        reporter.popreport(dbin, reports, access, false, true, false);
+                        selected = "Developer";
+                    }
+                    if (User.IsInRole("Submitter"))
+                    {
+                        reporter.popreport(dbin, reports, access, true, false, false);
+                        selected = "Submitter";
+                    }
+                    rp.reportin = reports;
+                    rp.projectreportin = null;
+                    rp.rolesin = new SelectList(selectlist, selected);
+                    rp.type = "All";
+                }
             }
-            if (User.IsInRole("ProjectManager"))
+            else
             {
-                reporter.popreport(dbin, reports, access, false, false, true);
+                if (!string.IsNullOrWhiteSpace(role))
+                {
+                    if (type == "Projects")
+                    {
+                        IList<ProjectReportList> reports = reporter.createreport(db.Priorities.ToList(), db.Projects.ToList());
+                        if (role == "Admin")
+                        {
+                            reporter.popreport(dbin, reports);
+                        }
+                        if (role == "ProjectManager")
+                        {
+                            reporter.popreport(dbin, reports, access, false, false, true);
+                        }
+                        if (role == "Developer")
+                        {
+                            reporter.popreport(dbin, reports, access, false, true, false);
+                        }
+                        if (role == "Submitter")
+                        {
+                            reporter.popreport(dbin, reports, access, true, false, false);
+                        }
+                        rp.reportin = null;
+                        rp.projectreportin = reports;
+                        rp.rolesin = new SelectList(selectlist, role);
+                        rp.type = type;
+                    }
+                    if (type == "All")
+                    {
+                        IList<ReportList> reports = reporter.createreport(db.Priorities.ToList());
+                        if (role == "Admin")
+                        {
+                            reporter.popreport(dbin, reports);
+                        }
+                        if (role == "ProjectManager")
+                        {
+                            reporter.popreport(dbin, reports, access, false, false, true);
+                        }
+                        if (role == "Developer")
+                        {
+                            reporter.popreport(dbin, reports, access, false, true, false);
+                        }
+                        if (role == "Submitter")
+                        {
+                            reporter.popreport(dbin, reports, access, true, false, false);
+                        }
+                        rp.reportin = reports;
+                        rp.projectreportin = null;
+                        rp.rolesin = new SelectList(selectlist, role);
+                        rp.type = type;
+                    }
+                }
             }
-            if (User.IsInRole("Developer"))
-            {
-                reporter.popreport(dbin, reports, access, false, true, false);
-            }
-            if (User.IsInRole("Submitter"))
-            {
-                reporter.popreport(dbin, reports, access, true, false, false);
-            }
-            return View(reports);
+            return View(rp);
         }
 
     }

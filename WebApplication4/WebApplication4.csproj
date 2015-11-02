@@ -185,7 +185,9 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\helper\ListboxTicket.cs" />
     <Compile Include="Models\helper\ProjectDetails.cs" />
+    <Compile Include="Models\helper\ProjectReportList.cs" />
     <Compile Include="Models\helper\ProjectsIn.cs" />
+    <Compile Include="Models\helper\ReportInput.cs" />
     <Compile Include="Models\helper\ReportList.cs" />
     <Compile Include="Models\helper\Reporthelper.cs" />
     <Compile Include="Models\helper\TicketDetails.cs" />
@@ -452,9 +454,11 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\ListboxTicket\" />
     <Folder Include="Views\ProjectDetails\" />
+    <Folder Include="Views\ProjectReportList\" />
     <Folder Include="Views\ProjectsIn\" />
     <Folder Include="Views\ProjectsUsers\" />
     <Folder Include="Views\Reporthelper\" />
+    <Folder Include="Views\ReportInput\" />
     <Folder Include="Views\Report\" />
     <Folder Include="Views\RoleManager\" />
     <Folder Include="Views\TicketAttach\" />

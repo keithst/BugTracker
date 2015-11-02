@@ -1,26 +1,85 @@
-﻿@model IList<WebApplication4.Models.helper.ReportList>
+﻿@model WebApplication4.Models.helper.ReportInput
 @{
     ViewBag.Title = "Report";
 }
 
 <h2>Report</h2>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Reports</h4>
-    </div>
-    <div class="panel-body">
-        @foreach (var item in Model)
+<form role="form" action="@Url.Action("Report", "Home")" method="get">
+@Html.AntiForgeryToken()
+@Html.DropDownListFor(x => x.rolesin, Model.rolesin, new { Name = "role"})
+<select name="type">
+    @if(Model.type == "All")
+    {
+        <option value="All" selected>All</option>
+    }
+    else
+    {
+        <option value="All">All</option>
+    }
+    @if (Model.type == "Projects")
+    {
+        <option value="Projects" selected>Projects</option>
+    }
+    else
+    {
+        <option value="Projects">Projects</option>
+    }
+</select>
+    <button type="submit" class="btn btn-primary">Get Report</button>
+</form>
+
+@if(Model.reportin != null)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>All</h4>
+        </div>
+        <div class="panel-body">
+        @foreach (var item in Model.reportin)
         {
             var csscolor = item.name + "b";
-            <a href="@Url.Action("Index", "Tickets", new { priority = item.name })" class="nolink">
-            <small class="black">@item.name</small>
-            <div class="progress">
-                <div class="progress-bar progress-bar-success @csscolor" role="progressbar" aria-valuenow="@item.count" aria-valuemin="0" aria-valuemax="@item.total" style="width: @item.percentage%">
-                    <small>@item.count out of @item.total</small>
+                <a href="@Url.Action("Index", "Tickets", new { priority = item.name })" class="nolink">
+                    <small class="black">@item.name</small>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success @csscolor" role="progressbar" aria-valuenow="@item.count" aria-valuemin="0" aria-valuemax="@item.total" style="width: @item.percentage%">
+                            <small>@item.count out of @item.total</small>
+                        </div>
+                    </div>
+                </a>
+        }
+        </div>
+    </div>
+}
+else
+{
+    if(Model.projectreportin != null)
+    {
+        foreach (var item in Model.projectreportin)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>@item.projectname</h4>
+                </div>
+                <div class="panel-body">
+                @foreach (var report in item.reports)
+                {
+                        var csscolor = report.name + "b";
+                        <a href="@Url.Action("Index", "Tickets", new { priority = report.name })" class="nolink">
+                            <small class="black">@report.name</small>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-success @csscolor" role="progressbar" aria-valuenow="@report.count" aria-valuemin="0" aria-valuemax="@report.total" style="width: @report.percentage%">
+                                    <small>@report.count out of @report.total</small>
+                                </div>
+                            </div>
+                        </a>
+                }
                 </div>
             </div>
-            </a>
-        }
-    </div>
-</div>
+         }
+     }
+     else
+     {
+        @:No Report Found
+     }
+}
