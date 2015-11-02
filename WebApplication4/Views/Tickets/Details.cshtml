@@ -3,14 +3,14 @@
 
 @{
     ViewBag.Title = "Details";
-    IList<string> attachements = new List<string>();
+    IList<string> attachments = new List<string>();
     IList<TicketComments> commentlist = new List<TicketComments>();
 }
 @foreach (var item in Model.ticketdetails.TicketComments)
 {
     if(item.AttachURL != null)
     {
-        attachements.Add(item.AttachURL);
+        attachments.Add(item.AttachURL);
     }
     commentlist.Add(item);
 }
@@ -94,12 +94,12 @@
 
     </dl>
 </div>
-<div>Attachements</div>
+<div>Attachments</div>
 <div class="attachments">
-    @foreach (var item in attachements)
+    @foreach (var item in attachments)
     {
         var filename = item.Split('/');
-        <a href="@item" target="_blank">@filename.Last()</a>
+        <a href="@item" target="_blank">@filename.Last()</a><br />
     }
 </div>
 <p>
@@ -135,6 +135,7 @@
         if(item.AttachURL != null)
         {
             var filename = item.AttachURL.Split('/');
+            @:Attachment:
             <a href="@item.AttachURL" target="_blank">@filename.Last()</a>
         }
     }

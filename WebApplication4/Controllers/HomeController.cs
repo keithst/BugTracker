@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication4.Models;
 using WebApplication4.Models.helper;
+using Microsoft.AspNet.Identity;
 
 namespace WebApplication4.Controllers
 {
@@ -12,6 +13,8 @@ namespace WebApplication4.Controllers
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private UserAccess helper = new UserAccess();
+
         public ActionResult Index()
         {
             return View();
@@ -39,8 +42,25 @@ namespace WebApplication4.Controllers
         public ActionResult Report()
         {
             Reporthelper reporter = new Reporthelper();
+            var dbin = db.Tickets.ToList();
             IList<ReportList> reports = reporter.createreport(db.Priorities.ToList());
-            reporter.popreport(db.Tickets.ToList(), reports);
+            IList<UserTicketList> access = helper.UserisOwnerorAssigned(User.Identity.GetUserId(), dbin);
+            if (User.IsInRole("Admin"))
+            {
+                reporter.popreport(dbin, reports);
+            }
+            if (User.IsInRole("ProjectManager"))
+            {
+                reporter.popreport(dbin, reports, access, false, false, true);
+            }
+            if (User.IsInRole("Developer"))
+            {
+                reporter.popreport(dbin, reports, access, false, true, false);
+            }
+            if (User.IsInRole("Submitter"))
+            {
+                reporter.popreport(dbin, reports, access, true, false, false);
+            }
             return View(reports);
         }
 

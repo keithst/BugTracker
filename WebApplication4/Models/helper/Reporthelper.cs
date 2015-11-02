@@ -39,5 +39,36 @@ namespace WebApplication4.Models.helper
             }
             return reports;
         }
+
+        public IList<ReportList> popreport(IList<Ticket> tickets, IList<ReportList> reports, IList<UserTicketList> access, bool owner, bool assigned, bool isinproject)
+        {
+            foreach (var item in tickets)
+            {
+                foreach (var uaccess in access)
+                {
+                    if (item.Id == uaccess.ticketin)
+                    {
+                        if ((owner && uaccess.ownerconfirmed) || (assigned && uaccess.assignconfirmed) || (isinproject && uaccess.isinproject))
+                        {
+                            foreach (var report in reports)
+                            {
+                                if (item.TicketPriority.Priority == report.name)
+                                {
+                                    report.count++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            foreach (var report in reports)
+            {
+                report.percentage = ((report.count / (decimal)tickets.Count) * 100);
+                report.total = tickets.Count;
+            }
+            return reports;
+        }
+
+
     }
 }
