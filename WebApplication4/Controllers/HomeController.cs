@@ -85,7 +85,15 @@ namespace WebApplication4.Controllers
                 {
                     if (type == "Projects")
                     {
-                        IList<ProjectReportList> reports = reporter.createreport(db.Priorities.ToList(), db.Projects.ToList());
+                        IList<ProjectReportList> reports = new List<ProjectReportList>();
+                        if (role == "Admin")
+                        {
+                            reports = reporter.createreport(db.Priorities.ToList(), db.Projects.ToList());
+                        }
+                        else
+                        {
+                            reports = reporter.createreport(db.Priorities.ToList(), db.ProjectUsers.ToList(), User.Identity.GetUserId());
+                        }
                         if (role == "Admin")
                         {
                             reporter.popreport(dbin, reports);

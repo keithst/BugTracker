@@ -25,17 +25,40 @@ namespace WebApplication4.Models.helper
             var preportlist = new List<ProjectReportList>();
             foreach (var proj in projects)
             {
-                var preport = new ProjectReportList();
-                preport.projectname = proj.Project;
-                var reportlist = new List<ReportList>();
-                foreach (var prior in priorities)
+                    var preport = new ProjectReportList();
+                    preport.projectname = proj.Project;
+                    var reportlist = new List<ReportList>();
+                    foreach (var prior in priorities)
+                    {
+                        var item = new ReportList();
+                        item.name = prior.Priority;
+                        reportlist.Add(item);
+                    }
+                    preport.reports = reportlist;
+                    preportlist.Add(preport);
+            }
+            return preportlist;
+        }
+
+        public IList<ProjectReportList> createreport(IList<TicketPriority> priorities, IList<ProjectUsers> projects, string id)
+        {
+            var preportlist = new List<ProjectReportList>();
+            foreach (var proj in projects)
+            {
+                if (proj.ProjectUserId == id)
                 {
-                    var item = new ReportList();
-                    item.name = prior.Priority;
-                    reportlist.Add(item);
+                    var preport = new ProjectReportList();
+                    preport.projectname = proj.Project.Project;
+                    var reportlist = new List<ReportList>();
+                    foreach (var prior in priorities)
+                    {
+                        var item = new ReportList();
+                        item.name = prior.Priority;
+                        reportlist.Add(item);
+                    }
+                    preport.reports = reportlist;
+                    preportlist.Add(preport);
                 }
-                preport.reports = reportlist;
-                preportlist.Add(preport);
             }
             return preportlist;
         }
