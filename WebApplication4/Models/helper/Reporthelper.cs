@@ -42,6 +42,7 @@ namespace WebApplication4.Models.helper
 
         public IList<ReportList> popreport(IList<Ticket> tickets, IList<ReportList> reports, IList<UserTicketList> access, bool owner, bool assigned, bool isinproject)
         {
+            int tickettotal = new int();
             foreach (var item in tickets)
             {
                 foreach (var uaccess in access)
@@ -55,6 +56,7 @@ namespace WebApplication4.Models.helper
                                 if (item.TicketPriority.Priority == report.name)
                                 {
                                     report.count++;
+                                    tickettotal++;
                                 }
                             }
                         }
@@ -63,8 +65,8 @@ namespace WebApplication4.Models.helper
             }
             foreach (var report in reports)
             {
-                report.percentage = ((report.count / (decimal)tickets.Count) * 100);
-                report.total = tickets.Count;
+                report.percentage = ((report.count / (decimal)tickettotal) * 100);
+                report.total = tickettotal;
             }
             return reports;
         }
