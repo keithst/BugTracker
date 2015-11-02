@@ -6,7 +6,6 @@
 <h2>Report</h2>
 
 <form role="form" action="@Url.Action("Report", "Home")" method="get">
-@Html.AntiForgeryToken()
 @Html.DropDownListFor(x => x.rolesin, Model.rolesin, new { Name = "role"})
 <select name="type">
     @if(Model.type == "All")

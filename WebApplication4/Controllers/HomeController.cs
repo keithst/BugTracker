@@ -39,6 +39,7 @@ namespace WebApplication4.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Report(string role, string type)
         {
             UserRoleHelper helperu = new UserRoleHelper();

@@ -7,29 +7,26 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3">
-            <!-- Left column -->
-            <a href="#"><strong><i class="glyphicon glyphicon-wrench"></i> Tools</strong></a>
-            <hr>
             <ul class="nav nav-stacked">
                 <li class="nav-header">
                     <a href="#" data-toggle="collapse" data-target="#userMenu">Tickets <i class="glyphicon glyphicon-chevron-down"></i></a>
                     <ul class="nav nav-stacked collapse in" id="userMenu">
                         @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer"))
                         {
-                            <li><a href="@Url.Action("Index", "Projects")"><i class="glyphicon glyphicon-user"></i>My Project List</a></li>
+                            <li><a href="@Url.Action("Index", "Projects")"><i class="glyphicon glyphicon-list-alt"></i> Project List</a></li>
                         }
                         @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
                         {
-                            <li><a href="@Url.Action("Index", "Tickets")"><i class="glyphicon glyphicon-user"></i>My Ticket List</a></li>
+                            <li><a href="@Url.Action("Index", "Tickets")"><i class="glyphicon glyphicon-list-alt"></i> Ticket List</a></li>
                         }
                     </ul>
                 </li>
                 <li class="nav-header">
-                    <a href="#" data-toggle="collapse" data-target="#menu2"> Reports <i class="glyphicon glyphicon-chevron-right"></i></a>
-                    <ul class="nav nav-stacked collapse" id="menu2">
+                    <a href="#" data-toggle="collapse" data-target="#menu2"> Reports <i class="glyphicon glyphicon-chevron-down"></i></a>
+                    <ul class="nav nav-stacked collapse in" id="menu2">
                         @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer"))
                         {
-                            <li><a href="@Url.Action("Report")"><i class="glyphicon glyphicon-user"></i>My Reports</a></li>
+                            <li><a href="@Url.Action("Report")"><i class="glyphicon glyphicon-file"></i> Reports</a></li>
                         }
                     </ul>
                 </li>
@@ -40,15 +37,15 @@
                     <ul class="nav nav-stacked collapse in" id="userMenu1">
                         @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
                         {
-                            <li><a href="@Url.Action("ChangePassword", "Manage")"><i class="glyphicon glyphicon-flag"></i> Change Password</a></li>
+                            <li><a href="@Url.Action("ChangePassword", "Manage")"><i class="glyphicon glyphicon-cog"></i> Change Password</a></li>
                         }
                         @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
                         {
-                            <li><a href="@Url.Action("ChangeUserName", "Account")"><i class="glyphicon glyphicon-user"></i> Change UserName</a></li>
+                            <li><a href="@Url.Action("ChangeUserName", "Account")"><i class="glyphicon glyphicon-cog"></i> Change UserName</a></li>
                         }
                         @if (User.IsInRole("Admin"))
                         {
-                            <li><a href="@Url.Action("UserRolePage", "Account")"><i class="glyphicon glyphicon-exclamation-sign"></i> Roles</a></li>
+                            <li><a href="@Url.Action("UserRolePage", "Account")"><i class="glyphicon glyphicon-cog"></i> Roles</a></li>
                         }
                     </ul>
                 </li>
@@ -104,4 +101,3 @@
         </div>
         <!--/col-span-9-->
     </div>
-</div>

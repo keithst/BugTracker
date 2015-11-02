@@ -18,12 +18,7 @@
     <!-- header -->
     <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
         <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+            <div class="navbar-left">
                 @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
                 {
                     <a class="navbar-brand" href="@Url.Action("Main", "Home")">Dashboard</a>
@@ -32,10 +27,10 @@
             <div class="navbar-right">
                 @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
                 {
-                    <b class="navbar-brand">Logged in as: @User.Identity.Name</b>
+                    <b class="navbar-text textsize">Logged in as: @User.Identity.Name</b>
                     <form action="@Url.Action("LogOff", "Account")" method="post" class="formalign">
                         @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-lock"></i> Logout</button>
+                        <button type="submit" class="navbar-brand button"><i class="glyphicon glyphicon-lock"></i> Log Off</button>
                     </form>
                 }
             </div>
