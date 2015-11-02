@@ -12,15 +12,8 @@
             <hr>
             <ul class="nav nav-stacked">
                 <li class="nav-header">
-                    <a href="#" data-toggle="collapse" data-target="#userMenu">Settings <i class="glyphicon glyphicon-chevron-down"></i></a>
+                    <a href="#" data-toggle="collapse" data-target="#userMenu">Tickets <i class="glyphicon glyphicon-chevron-down"></i></a>
                     <ul class="nav nav-stacked collapse in" id="userMenu">
-                        <li class="active"> <a href="#"><i class="glyphicon glyphicon-home"></i> Home</a></li>
-                        <li><a href="#"><i class="glyphicon glyphicon-envelope"></i> Messages <span class="badge badge-info">4</span></a></li>
-                        <li><a href="#"><i class="glyphicon glyphicon-cog"></i> Options</a></li>
-                        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer"))
-                        {
-                            <li><a href="@Url.Action("Report")"><i class="glyphicon glyphicon-user"></i>My Reports</a></li>
-                        }
                         @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer"))
                         {
                             <li><a href="@Url.Action("Index", "Projects")"><i class="glyphicon glyphicon-user"></i>My Project List</a></li>
@@ -29,6 +22,22 @@
                         {
                             <li><a href="@Url.Action("Index", "Tickets")"><i class="glyphicon glyphicon-user"></i>My Ticket List</a></li>
                         }
+                    </ul>
+                </li>
+                <li class="nav-header">
+                    <a href="#" data-toggle="collapse" data-target="#menu2"> Reports <i class="glyphicon glyphicon-chevron-right"></i></a>
+                    <ul class="nav nav-stacked collapse" id="menu2">
+                        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer"))
+                        {
+                            <li><a href="@Url.Action("Report")"><i class="glyphicon glyphicon-user"></i>My Reports</a></li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav nav-stacked">
+                <li class="nav-header">
+                    <a href="#" data-toggle="collapse" data-target="#userMenu1">Account <i class="glyphicon glyphicon-chevron-down"></i></a>
+                    <ul class="nav nav-stacked collapse in" id="userMenu1">
                         @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
                         {
                             <li><a href="@Url.Action("ChangePassword", "Manage")"><i class="glyphicon glyphicon-flag"></i> Change Password</a></li>
@@ -42,45 +51,7 @@
                             <li><a href="@Url.Action("UserRolePage", "Account")"><i class="glyphicon glyphicon-exclamation-sign"></i> Roles</a></li>
                         }
                     </ul>
-                        <form action="@Url.Action("LogOff", "Account")" method="post" class="formalign">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class=""><i class="glyphicon glyphicon-off"></i> Logout</button>
-                        </form>
                 </li>
-                <li class="nav-header">
-                    <a href="#" data-toggle="collapse" data-target="#menu2"> Reports <i class="glyphicon glyphicon-chevron-right"></i></a>
-                    <ul class="nav nav-stacked collapse" id="menu2">
-                        <li>
-                            <a href="#">Information &amp; Stats</a>
-                        </li>
-                        <li>
-                            <a href="#">Views</a>
-                        </li>
-                        <li>
-                            <a href="#">Requests</a>
-                        </li>
-                        <li>
-                            <a href="#">Timetable</a>
-                        </li>
-                        <li>
-                            <a href="#">Alerts</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-header">
-                    <a href="#" data-toggle="collapse" data-target="#menu3"> Social Media <i class="glyphicon glyphicon-chevron-right"></i></a>
-                    <ul class="nav nav-stacked collapse" id="menu3">
-                        <li><a href=""><i class="glyphicon glyphicon-circle"></i> Facebook</a></li>
-                        <li><a href=""><i class="glyphicon glyphicon-circle"></i> Twitter</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <ul class="nav nav-stacked">
-                <li class="active"><a href="http://bootply.com" title="The Bootstrap Playground" target="ext">Playground</a></li>
-                <li><a href="/tagged/bootstrap-3">Bootstrap 3</a></li>
-                <li><a href="/61518" title="Bootstrap 3 Panel">Panels</a></li>
-                <li><a href="/61521" title="Bootstrap 3 Icons">Glyphicons</a></li>
-                <li><a href="/62603">Layout</a></li>
             </ul>
         </div>
         <!-- /col-3 -->

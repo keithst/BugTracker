@@ -35,7 +35,7 @@
                     <b class="navbar-brand">Logged in as: @User.Identity.Name</b>
                     <form action="@Url.Action("LogOff", "Account")" method="post" class="formalign">
                         @Html.AntiForgeryToken()
-                        <button type="submit"><i class="glyphicon glyphicon-lock"></i> Logout</button>
+                        <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-lock"></i> Logout</button>
                     </form>
                 }
             </div>
