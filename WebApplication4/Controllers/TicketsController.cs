@@ -164,7 +164,7 @@ namespace WebApplication4.Models
                 var user = db.Users.Where(x => x.Id == item.ProjectUserId).Single();
                 userassign.Add(user);
             }
-            ticketd.ticketassign = new SelectList(userassign, "UserName", "UserName");
+            ticketd.ticketassign = new SelectList(userassign, "UserName", "UserName", ticket.Assigned.UserName);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Project", ticket.ProjectId);
             ViewBag.TicketPriorityId = new SelectList(db.Priorities, "Id", "Priority", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.Status, "Id", "Status", ticket.TicketStatusId);
