@@ -25,12 +25,19 @@ namespace WebApplication4.Models
         private IList<ApplicationUser> userassign = new List<ApplicationUser>();
 
         // GET: Tickets
-        public ActionResult Index(string priority)
+        public ActionResult Index(string priority, string project)
         {
             var ticketdb = db.Tickets.Include(t => t.Assigned).Include(t => t.Owner).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
             if (!string.IsNullOrWhiteSpace(priority))
             {
-                indexinput.tickets = ticketdb.Where(x => x.TicketPriority.Priority == priority).OrderBy(y => y.Id).ToList();
+                if (!string.IsNullOrWhiteSpace(project))
+                {
+                    indexinput.tickets = ticketdb.Where(x => (x.TicketPriority.Priority == priority) || (x.Project.Project == project)).OrderBy(y => y.Id).ToList();
+                }
+                else
+                {
+                    indexinput.tickets = ticketdb.Where(x => (x.TicketPriority.Priority == priority)).OrderBy(y => y.Id).ToList();
+                }
             }
             else
             {

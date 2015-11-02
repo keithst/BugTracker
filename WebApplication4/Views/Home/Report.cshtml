@@ -65,7 +65,7 @@ else
                 @foreach (var report in item.reports)
                 {
                         var csscolor = report.name + "b";
-                        <a href="@Url.Action("Index", "Tickets", new { priority = report.name })" class="nolink">
+                        <a href="@Url.Action("Index", "Tickets", new { priority = report.name, project = item.projectname })" class="nolink">
                             <small class="black">@report.name</small>
                             <div class="progress">
                                 <div class="progress-bar progress-bar-success @csscolor" role="progressbar" aria-valuenow="@report.count" aria-valuemin="0" aria-valuemax="@report.total" style="width: @report.percentage%">
