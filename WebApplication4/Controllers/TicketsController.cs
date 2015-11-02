@@ -163,6 +163,7 @@ namespace WebApplication4.Models
         // GET: Tickets/Edit/5
         public ActionResult Edit(int? id)
         {
+            UserRoleHelper helper = new UserRoleHelper();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -176,10 +177,12 @@ namespace WebApplication4.Models
             foreach(var item in query)
             {
                 var user = db.Users.Where(x => x.Id == item.ProjectUserId).Single();
-                userassign.Add(user);
+                if (helper.IsUserInRole(user.Id, "Developer"))
+                {
+                    userassign.Add(user);
+                }
             }
             ticketd.ticketassign = new SelectList(userassign, "UserName", "UserName", ticket.Assigned.UserName);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Project", ticket.ProjectId);
             ViewBag.TicketPriorityId = new SelectList(db.Priorities, "Id", "Priority", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.Status, "Id", "Status", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.Types, "Id", "Type", ticket.TicketTypeId);
@@ -192,19 +195,19 @@ namespace WebApplication4.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerId,AssignedId")] Ticket ticket, string Assigned)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerId,AssignedId")] Ticket ticket, string Assigned, int ProjectIn)
         {
             if (ModelState.IsValid)
             {
                 var user = db.Users.Where(x => x.UserName == Assigned).Single();
                 ticket.AssignedId = user.Id;
+                ticket.ProjectId = ProjectIn;
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.AssignedId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedId);
             ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Project", ticket.ProjectId);
             ViewBag.TicketPriorityId = new SelectList(db.Priorities, "Id", "Priority", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.Status, "Id", "Status", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.Types, "Id", "Type", ticket.TicketTypeId);

@@ -132,11 +132,5 @@
         User: @item.CommentUser.FirstName @item.CommentUser.LastName<br />
         @item.Comment
         </p>
-        if(item.AttachURL != null)
-        {
-            var filename = item.AttachURL.Split('/');
-            @:Attachment:
-            <a href="@item.AttachURL" target="_blank">@filename.Last()</a>
-        }
     }
 </div>
