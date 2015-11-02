@@ -13,12 +13,14 @@
         @foreach (var item in Model)
         {
             var csscolor = item.name + "b";
-            <small>@item.name</small>
+            <a href="@Url.Action("Index", "Tickets", new { priority = item.name })" class="nolink">
+            <small class="black">@item.name</small>
             <div class="progress">
                 <div class="progress-bar progress-bar-success @csscolor" role="progressbar" aria-valuenow="@item.count" aria-valuemin="0" aria-valuemax="@item.total" style="width: @item.percentage%">
                     <small>@item.count out of @item.total</small>
                 </div>
             </div>
+            </a>
         }
     </div>
 </div>

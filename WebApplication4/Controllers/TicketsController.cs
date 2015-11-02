@@ -25,10 +25,17 @@ namespace WebApplication4.Models
         private IList<ApplicationUser> userassign = new List<ApplicationUser>();
 
         // GET: Tickets
-        public ActionResult Index()
+        public ActionResult Index(string priority)
         {
             var ticketdb = db.Tickets.Include(t => t.Assigned).Include(t => t.Owner).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            indexinput.tickets = ticketdb.OrderBy(x => x.Id).ToList();
+            if (!string.IsNullOrWhiteSpace(priority))
+            {
+                indexinput.tickets = ticketdb.Where(x => x.TicketPriority.Priority == priority).OrderBy(y => y.Id).ToList();
+            }
+            else
+            {
+                indexinput.tickets = ticketdb.OrderBy(x => x.Id).ToList();
+            }
 
             var idin = User.Identity.GetUserId();
             indexinput.accessin = helper.UserisOwnerorAssigned(idin, indexinput.tickets);
