@@ -32,7 +32,7 @@ namespace WebApplication4.Models
             {
                 if (!string.IsNullOrWhiteSpace(project))
                 {
-                    indexinput.tickets = ticketdb.Where(x => (x.TicketPriority.Priority == priority) || (x.Project.Project == project)).OrderBy(y => y.Id).ToList();
+                    indexinput.tickets = ticketdb.Where(x => (x.TicketPriority.Priority == priority) & (x.Project.Project == project)).OrderBy(y => y.Id).ToList();
                 }
                 else
                 {
