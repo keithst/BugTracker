@@ -16,91 +16,93 @@
 }
 <h2>Details</h2>
 
-<div>
-    <h4>Ticket</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Assigned
-        </dt>
+<h4>Ticket #@Model.ticketdetails.Id</h4>
+<hr />
+<div class="row">
+    <div class="col-xs-9">
+        <div class="row">
+            <div class="col-xs-2">
+                @Html.DisplayNameFor(model => model.ticketdetails.Title)
+            </div>
+            <div class="col-xs-4">
+                @Html.DisplayFor(model => model.ticketdetails.Title)
+            </div>
+            <div class="col-xs-2">
+                @Html.DisplayNameFor(model => model.ticketdetails.Created)
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.ticketdetails.Assigned.UserName)
-        </dd>
+            <div class="col-xs-4">
+                @Html.DisplayFor(model => model.ticketdetails.Created)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                Assigned
+            </div>
+            <div class="col-xs-4">
+                @Html.DisplayFor(model => model.ticketdetails.Assigned.UserName)
+            </div>
+            <div class="col-xs-2">
+                Owner
+            </div>
+            <div class="col-xs-4">
+                @Html.DisplayFor(model => model.ticketdetails.Owner.UserName)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                @Html.DisplayNameFor(model => model.ticketdetails.TicketPriority.Priority)
+            </div>
+            <div class="col-xs-4">
+                <b class="@Model.ticketdetails.TicketPriority.Priority">
+                    @Html.DisplayFor(model => model.ticketdetails.TicketPriority.Priority)
+                </b>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                @Html.DisplayNameFor(model => model.ticketdetails.Project.Project)
+            </div>
+            <div class="col-xs-4">
+                @Html.DisplayFor(model => model.ticketdetails.Project.Project)
+            </div>
+        </div>
 
-        <dt>
-            Owner
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ticketdetails.Owner.UserName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ticketdetails.Project.Project)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ticketdetails.Project.Project)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ticketdetails.TicketPriority.Priority)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ticketdetails.TicketPriority.Priority)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ticketdetails.TicketStatus.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ticketdetails.TicketStatus.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ticketdetails.TicketType.Type)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ticketdetails.TicketType.Type)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ticketdetails.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ticketdetails.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ticketdetails.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ticketdetails.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ticketdetails.Created)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ticketdetails.Created)
-        </dd>
-
-    </dl>
-</div>
-<div>Attachments</div>
-<div class="attachments">
-    @foreach (var item in attachments)
-    {
-        var filename = item.Split('/');
-        <a href="@item" target="_blank">@filename.Last()</a><br />
-    }
+        <div class="row">
+            <div class="col-xs-2">
+                @Html.DisplayNameFor(model => model.ticketdetails.TicketStatus.Status)
+            </div>
+            <div class="col-xs-4">
+                @Html.DisplayFor(model => model.ticketdetails.TicketStatus.Status)
+            </div>
+            <div class="col-xs-2">
+                @Html.DisplayNameFor(model => model.ticketdetails.TicketType.Type)
+            </div>
+            <div class="col-xs-4">
+                @Html.DisplayFor(model => model.ticketdetails.TicketType.Type)
+            </div>
+        </div><br />
+        <div class="row">
+            <div class="col-xs-12">
+                @Html.DisplayNameFor(model => model.ticketdetails.Description)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                @Html.DisplayFor(model => model.ticketdetails.Description)
+            </div>
+        </div>
+    </div>
+    <div class="cols-xs-3">
+        <div>Attachments</div>
+        <div class="attachments">
+            @foreach (var item in attachments)
+            {
+                var filename = item.Split('/');
+                <a href="@item" target="_blank">@filename.Last()</a><br />
+            }
+        </div>
+    </div>
 </div>
 <p>
     @if (User.IsInRole("Admin") || (User.IsInRole("ProjectManager") && Model.accessin.isinproject) ||
@@ -118,7 +120,7 @@
     {
         <form action="@Url.Action("Details", "Tickets", new { id = Model.ticketdetails.Id })" method="post" class="formalign" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
-            <textarea name="Comment" id="Comment" rows="3" cols="80"></textarea><br />
+            <textarea name="Comment" id="Comment" rows="3" cols="80" required></textarea><br />
             <input name="AttachURLin" type="file" class="form-control" id="fileUpload" /><br />
             <button type="submit" class="btn btn-primary">Submit Comment</button>
         </form>
