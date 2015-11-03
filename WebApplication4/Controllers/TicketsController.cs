@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using WebApplication4.Models.helper;
 using PagedList;
 using System.IO;
+using System.Data.Entity.Core.Objects;
 
 namespace WebApplication4.Models
 {
@@ -202,7 +203,26 @@ namespace WebApplication4.Models
                 var user = db.Users.Where(x => x.UserName == Assigned).Single();
                 ticket.AssignedId = user.Id;
                 ticket.ProjectId = ProjectIn;
-                db.Entry(ticket).State = EntityState.Modified;
+                var dbin = db.Tickets.Single(x => x.Id == ticket.Id);
+                db.Entry(dbin).CurrentValues.SetValues(ticket);
+                var cnames = db.Entry(dbin).CurrentValues.PropertyNames;
+                foreach (var curr in cnames)
+                {
+                    var oldvalue = db.Entry(dbin).Property(curr).OriginalValue.ToString();
+                    var newvalue = db.Entry(dbin).Property(curr).CurrentValue.ToString();
+                    if (oldvalue != newvalue)
+                    {
+                        TicketHistory hist = new TicketHistory();
+                        hist.TicketFieldName = curr;
+                        hist.OldValue = oldvalue;
+                        hist.NewValue = newvalue;
+                        hist.HistoryUserId = User.Identity.GetUserId();
+                        hist.TicketId = ticket.Id;
+                        hist.Changed = System.DateTimeOffset.Now;
+                        db.Histories.Add(hist);
+                    }
+                }
+                db.Entry(dbin).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
