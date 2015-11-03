@@ -14,6 +14,14 @@
     overflow-y: auto;
 }
 
+.history {
+    width: 600px;
+    height: 200px;
+    overflow: scroll;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
 .textsize {
     font-size: 16px;
 }

@@ -67,6 +67,7 @@ namespace WebApplication4.Models
             }
             ticketd.ticketdetails = ticket;
             ticketd.accessin = helper.UserisOwnerorAssignedSingle(User.Identity.GetUserId(), ticket);
+            ticketd.historyin = db.Histories.Where(x => x.TicketId == id).ToList();
             return View(ticketd);
         }
 

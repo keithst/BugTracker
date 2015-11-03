@@ -94,7 +94,7 @@
         </div>
     </div>
     <div class="cols-xs-3">
-        <div>Attachments</div>
+        <h4>Attachments</h4>
         <div class="attachments">
             @foreach (var item in attachments)
             {
@@ -103,6 +103,27 @@
             }
         </div>
     </div>
+</div>
+<div class="row">
+    @if (Model.historyin != null)
+    {
+        <div class="col-xs-12">
+        <h4>History</h4>
+            <form action="@Url.Action("Revert", "Tickets")" method="post" class="formalign">
+                @Html.AntiForgeryToken()
+                <select multiple class="history">
+                    @foreach (var item in Model.historyin)
+                    {
+                        <option value="@item.Id">
+                            @item.TicketFieldName changed on @item.Changed
+                            Old value: @item.OldValue
+                            New value: @item.NewValue
+                        </option>
+                    }
+                </select>
+            </form>
+        </div>
+    }
 </div>
 <p>
     @if (User.IsInRole("Admin") || (User.IsInRole("ProjectManager") && Model.accessin.isinproject) ||
