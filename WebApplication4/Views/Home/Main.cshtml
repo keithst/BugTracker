@@ -9,7 +9,7 @@
         <div class="col-sm-3">
             <ul class="nav nav-stacked">
                 <li class="nav-header">
-                    <a href="#" data-toggle="collapse" data-target="#userMenu">Tickets <i class="glyphicon glyphicon-chevron-down"></i></a>
+                    <a href="#" onclick="return false" data-toggle="collapse" data-target="#userMenu">Tickets <i class="glyphicon glyphicon-chevron-down"></i></a>
                     <ul class="nav nav-stacked collapse in" id="userMenu">
                         @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer"))
                         {
@@ -22,7 +22,7 @@
                     </ul>
                 </li>
                 <li class="nav-header">
-                    <a href="#" data-toggle="collapse" data-target="#menu2"> Reports <i class="glyphicon glyphicon-chevron-down"></i></a>
+                    <a href="#" onclick="return false" data-toggle="collapse" data-target="#menu2"> Reports <i class="glyphicon glyphicon-chevron-down"></i></a>
                     <ul class="nav nav-stacked collapse in" id="menu2">
                         @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
                         {
@@ -33,7 +33,7 @@
             </ul>
             <ul class="nav nav-stacked">
                 <li class="nav-header">
-                    <a href="#" data-toggle="collapse" data-target="#userMenu1">Account <i class="glyphicon glyphicon-chevron-down"></i></a>
+                    <a href="#" onclick="return false" data-toggle="collapse" data-target="#userMenu1">Account <i class="glyphicon glyphicon-chevron-down"></i></a>
                     <ul class="nav nav-stacked collapse in" id="userMenu1">
                         @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
                         {

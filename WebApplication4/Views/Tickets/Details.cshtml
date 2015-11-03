@@ -14,9 +14,7 @@
     }
     commentlist.Add(item);
 }
-<h2>Details</h2>
-
-<h4>Ticket #@Model.ticketdetails.Id</h4>
+<h2>Ticket #@Model.ticketdetails.Id</h2>
 <hr />
 <div class="row">
     <div class="col-xs-9">
@@ -84,7 +82,9 @@
         </div><br />
         <div class="row">
             <div class="col-xs-12">
-                @Html.DisplayNameFor(model => model.ticketdetails.Description)
+                <h4>
+                    @Html.DisplayNameFor(model => model.ticketdetails.Description)
+                </h4>
             </div>
         </div>
         <div class="row">
@@ -93,7 +93,7 @@
             </div>
         </div>
     </div>
-    <div class="cols-xs-3">
+    <div class="col-xs-3">
         <h4>Attachments</h4>
         <div class="attachments">
             @foreach (var item in attachments)
@@ -108,23 +108,29 @@
     @if (Model.historyin != null)
     {
         <div class="col-xs-12">
-        <h4>History</h4>
-            <form action="@Url.Action("Revert", "Tickets")" method="post" class="formalign">
-                @Html.AntiForgeryToken()
-                <select multiple class="history">
-                    @foreach (var item in Model.historyin)
-                    {
-                        <option value="@item.Id">
-                            @item.TicketFieldName changed on @item.Changed
-                            Old value: @item.OldValue
-                            New value: @item.NewValue
-                        </option>
-                    }
-                </select>
-            </form>
+        <ul class="nav nav-stacked">
+            <li class="nav-header">
+                <h4><a href="#" onclick="return false" data-toggle="collapse" data-target="#userMenu1" class="nolink inheritcolor">History <i class="glyphicon glyphicon-chevron-right"></i></a></h4>
+                <ul class="nav nav-stacked collapse" id="userMenu1">
+                    <li>
+                        @foreach (var item in Model.historyin)
+                        {
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    @item.TicketFieldName changed on @item.Changed<br />
+                                    Old value: @item.OldValue<br />
+                                    New value: @item.NewValue<br />
+                                </div>
+                            </div>
+                        }
+                    </li>
+                </ul>
+            </li>
+        </ul>
         </div>
     }
 </div>
+<br />
 <p>
     @if (User.IsInRole("Admin") || (User.IsInRole("ProjectManager") && Model.accessin.isinproject) ||
                                 (User.IsInRole("Developer") && Model.accessin.assignconfirmed) || 

@@ -12,5 +12,6 @@ namespace WebApplication4.Models.helper
         public UserTicketList accessin { get; set; }
         public SelectList ticketassign { get; set; }
         public IList<TicketHistory> historyin { get; set; }
+        public string response { get; set; }
     }
 }

@@ -54,7 +54,7 @@ namespace WebApplication4.Models
         }
 
         // GET: Tickets/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, string response)
         {
             if (id == null)
             {
@@ -68,6 +68,7 @@ namespace WebApplication4.Models
             ticketd.ticketdetails = ticket;
             ticketd.accessin = helper.UserisOwnerorAssignedSingle(User.Identity.GetUserId(), ticket);
             ticketd.historyin = db.Histories.Where(x => x.TicketId == id).ToList();
+            ticketd.response = response;
             return View(ticketd);
         }
 

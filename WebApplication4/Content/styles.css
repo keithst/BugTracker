@@ -14,14 +14,6 @@
     overflow-y: auto;
 }
 
-.history {
-    width: 600px;
-    height: 200px;
-    overflow: scroll;
-    overflow-x: auto;
-    overflow-y: auto;
-}
-
 .textsize {
     font-size: 16px;
 }
@@ -71,9 +63,12 @@
 }
 
 .black {
-    color: #000000;
+    color: #000000 !important;
 }
 
+.inheritcolor {
+    color: inherit !important;
+}
 .betterul {
     list-style: none !important;
     padding: 0 !important;
@@ -123,8 +118,8 @@ footer {
   bottom: 12px;
   right: 6px;
   font-size: 9px;
-  background: rgba(51,200,51,0.55);
-  color: rgba(255,255,255,0.9);
+  background: none;
+  color: none;
   line-height: 1em;
   padding: 2px 4px;
   -webkit-border-radius: 10px;
