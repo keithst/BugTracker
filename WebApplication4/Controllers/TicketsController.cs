@@ -205,6 +205,7 @@ namespace WebApplication4.Models
                 ticket.ProjectId = ProjectIn;
                 var dbin = db.Tickets.Single(x => x.Id == ticket.Id);
                 db.Entry(dbin).CurrentValues.SetValues(ticket);
+
                 var cnames = db.Entry(dbin).CurrentValues.PropertyNames;
                 foreach (var curr in cnames)
                 {
