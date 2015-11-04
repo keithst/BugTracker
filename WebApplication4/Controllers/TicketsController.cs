@@ -11,6 +11,9 @@ using WebApplication4.Models.helper;
 using PagedList;
 using System.IO;
 using System.Data.Entity.Core.Objects;
+using System.Configuration;
+using SendGrid;
+using System.Net.Mail;
 
 namespace WebApplication4.Models
 {
@@ -54,7 +57,7 @@ namespace WebApplication4.Models
         }
 
         // GET: Tickets/Details/5
-        public ActionResult Details(int? id, string response)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -68,7 +71,6 @@ namespace WebApplication4.Models
             ticketd.ticketdetails = ticket;
             ticketd.accessin = helper.UserisOwnerorAssignedSingle(User.Identity.GetUserId(), ticket);
             ticketd.historyin = db.Histories.Where(x => x.TicketId == id).ToList();
-            ticketd.response = response;
             return View(ticketd);
         }
 
@@ -155,6 +157,26 @@ namespace WebApplication4.Models
                 ticket.Description = Description;
                 ticket.Created = System.DateTimeOffset.Now;
                 ticket.OwnerId = User.Identity.GetUserId();
+
+                TicketNotify note = new TicketNotify();
+                note.TicketId = ticket.Id;
+                note.NotifyUserId = ticket.OwnerId;
+                db.Notifications.Add(note);
+                
+
+                UserRoleHelper helper = new UserRoleHelper();
+                var manager = db.ProjectUsers.Where(x => x.ProjectId == ticket.ProjectId).ToList();
+                foreach(var item in manager)
+                {
+                    if(helper.IsUserInRole(item.ProjectUserId, "ProjectManager"))
+                    {
+                        TicketNotify note2 = new TicketNotify();
+                        note2.TicketId = ticket.Id;
+                        note2.NotifyUserId = item.ProjectUserId;
+                        db.Notifications.Add(note2);
+                    }
+                }
+
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -185,7 +207,14 @@ namespace WebApplication4.Models
                     userassign.Add(user);
                 }
             }
-            ticketd.ticketassign = new SelectList(userassign, "UserName", "UserName", ticket.Assigned.UserName);
+            if (ticket.Assigned.UserName != null)
+            {
+                ticketd.ticketassign = new SelectList(userassign, "UserName", "UserName", ticket.Assigned.UserName);
+            }
+            else
+            {
+                ticketd.ticketassign = new SelectList(userassign, "Username", "UserName");
+            }
             ViewBag.TicketPriorityId = new SelectList(db.Priorities, "Id", "Priority", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.Status, "Id", "Status", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.Types, "Id", "Type", ticket.TicketTypeId);
@@ -204,6 +233,13 @@ namespace WebApplication4.Models
             {
                 var user = db.Users.Where(x => x.UserName == Assigned).Single();
                 ticket.AssignedId = user.Id;
+
+                TicketNotify note = new TicketNotify();
+                note.TicketId = ticket.Id;
+                note.NotifyUserId = ticket.AssignedId;
+                db.Notifications.Add(note);
+                db.SaveChanges();
+
                 ticket.ProjectId = ProjectIn;
                 var dbin = db.Tickets.Single(x => x.Id == ticket.Id);
                 db.Entry(dbin).CurrentValues.SetValues(ticket);
@@ -223,6 +259,27 @@ namespace WebApplication4.Models
                         hist.TicketId = ticket.Id;
                         hist.Changed = System.DateTimeOffset.Now;
                         db.Histories.Add(hist);
+                        if(curr == "Assigned" || curr == "PriorityId" || curr == "StatusId")
+                        {
+                            var emails = db.Notifications.Where(x => x.TicketId == ticket.Id).Select(y => y.NotifyUser.Email).ToList();
+                            var username = ConfigurationManager.AppSettings["SendGridUserName"];
+                            var password = ConfigurationManager.AppSettings["SendGridPassword"];
+                            var from = ConfigurationManager.AppSettings["ContactEmail"];
+
+                            foreach (var email in emails)
+                            {
+                                SendGridMessage myMessage = new SendGridMessage();
+                                myMessage.AddTo(message.Destination);
+                                myMessage.From = new MailAddress(from);
+                                myMessage.Subject = message.Subject;
+                                myMessage.Html = message.Body;
+                                var credentials = new NetworkCredential(username, password);
+
+                                var transportWeb = new Web(credentials);
+
+                                transportWeb.DeliverAsync(myMessage);
+                            }
+                        }
                     }
                 }
                 db.Entry(dbin).State = EntityState.Modified;

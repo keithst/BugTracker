@@ -45,7 +45,8 @@ namespace WebApplication4.Controllers
             UserRoleHelper helperu = new UserRoleHelper();
             Reporthelper reporter = new Reporthelper();
             ReportInput rp = new ReportInput();
-            var dbin = db.Tickets.ToList();
+            var dbin = db.Tickets.Where(x => (x.TicketStatus.Status != "Fixed") || 
+                (x.TicketStatus.Status != "Released") || (x.TicketStatus.Status != "NoBug")).ToList();
             IList<UserTicketList> access = helper.UserisOwnerorAssigned(User.Identity.GetUserId(), dbin);
             var selectlist = helperu.ListUserRoles(User.Identity.GetUserId());
             string selected = null;

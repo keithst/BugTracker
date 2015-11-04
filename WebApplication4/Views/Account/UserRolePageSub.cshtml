@@ -3,16 +3,12 @@
     ViewBag.Title = "UserRolePageSub";
 }
 
-<h2>UserRolePageSub</h2>
-
-
 <form action="@Url.Action("UserRolePageSub")" method="post" class="formalign">
     @Html.AntiForgeryToken()
-    @Html.DisplayFor(x => x.User.UserName)
-    @Html.ListBoxFor(x => x.Roles, Model.RoleInput, new { Name = "Roles" } )<br />
+    <h4>@Html.DisplayFor(x => x.User.UserName)</h4><br />
+    @Html.ListBoxFor(x => x.Roles, Model.RoleInput, new { Name = "Roles" } )<br /><br />
     <button type="submit" class="btn btn-primary">Modify Users</button>
 </form>
-<br />
 
 <a href="@Url.Action("UserRolePage", "Account")" class="btn btn-primary">Back to List</a>
 @if(Model.response != null)
