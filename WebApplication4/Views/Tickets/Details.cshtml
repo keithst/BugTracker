@@ -163,8 +163,11 @@
         @Html.ActionLink("Edit", "Edit", new { id = Model.ticketdetails.Id }) @:|
     }
     @Html.ActionLink("Back to List", "Index")
-</p>
-<div>
+</p><br />
+
+<b>Add a comment</b>
+<div class="row">
+    <div class="col-xs-6">
     @if (User.IsInRole("Admin") || (User.IsInRole("ProjectManager") && Model.accessin.isinproject) ||
                                 (User.IsInRole("Developer") && Model.accessin.assignconfirmed) ||
                                 (User.IsInRole("Submitter") && Model.accessin.ownerconfirmed))
@@ -176,15 +179,30 @@
             <button type="submit" class="btn btn-primary">Submit Comment</button>
         </form>
     }
+    </div>
 </div>
-<div>
-    @foreach(var item in commentlist)
-    {
-        <br />
-        <p>
-        User: @item.CommentUser.FirstName @item.CommentUser.LastName<br />
-        @item.Comment
-        </p>
-    }
-</div>
+    <div>
+        <div class="col-xs-12">
+            <ul class="nav nav-stacked">
+                <li class="nav-header">
+                    <h4><a href="#" onclick="return false" data-toggle="collapse" data-target="#userMenu3" class="nolink inheritcolor">Comments <i class="glyphicon glyphicon-chevron-right"></i></a></h4>
+                    <ul class="nav nav-stacked collapse" id="userMenu3">
+                        <li>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    @foreach (var item in commentlist)
+                                    {
+                                        <p>
+                                            User: @item.CommentUser.UserName<br />
+                                            @item.Comment
+                                        </p><br />
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
 </body>

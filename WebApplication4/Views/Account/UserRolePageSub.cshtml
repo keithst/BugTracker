@@ -5,7 +5,7 @@
 
 <form action="@Url.Action("UserRolePageSub")" method="post" class="formalign">
     @Html.AntiForgeryToken()
-    <h4>@Html.DisplayFor(x => x.User.UserName)</h4><br />
+    <h4>Username: @Html.DisplayFor(x => x.User.UserName)</h4><br />
     @Html.ListBoxFor(x => x.Roles, Model.RoleInput, new { Name = "Roles" } )<br /><br />
     <button type="submit" class="btn btn-primary">Modify Users</button>
 </form>
