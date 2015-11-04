@@ -14,42 +14,53 @@
     }
     commentlist.Add(item);
 }
+<body class="scroll">
 <h2>Ticket #@Model.ticketdetails.Id</h2>
 <hr />
 <div class="row">
     <div class="col-xs-9">
-        <div class="row">
+        <div class="row marginb">
             <div class="col-xs-2">
-                @Html.DisplayNameFor(model => model.ticketdetails.Title)
+                <b>
+                    @Html.DisplayNameFor(model => model.ticketdetails.Title)
+                </b>
             </div>
             <div class="col-xs-4">
                 @Html.DisplayFor(model => model.ticketdetails.Title)
             </div>
             <div class="col-xs-2">
-                @Html.DisplayNameFor(model => model.ticketdetails.Created)
+                <b>
+                    @Html.DisplayNameFor(model => model.ticketdetails.Created)
+                </b>
             </div>
 
             <div class="col-xs-4">
                 @Html.DisplayFor(model => model.ticketdetails.Created)
             </div>
         </div>
-        <div class="row">
+        <div class="row marginb">
             <div class="col-xs-2">
-                Assigned
+                <b>
+                    Assigned
+                </b>
             </div>
             <div class="col-xs-4">
                 @Html.DisplayFor(model => model.ticketdetails.Assigned.UserName)
             </div>
             <div class="col-xs-2">
-                Owner
+                <b>
+                    Owner
+                </b>
             </div>
             <div class="col-xs-4">
                 @Html.DisplayFor(model => model.ticketdetails.Owner.UserName)
             </div>
         </div>
-        <div class="row">
+        <div class="row marginb">
             <div class="col-xs-2">
-                @Html.DisplayNameFor(model => model.ticketdetails.TicketPriority.Priority)
+                <b>
+                    @Html.DisplayNameFor(model => model.ticketdetails.TicketPriority.Priority)
+                </b>
             </div>
             <div class="col-xs-4">
                 <b class="@Model.ticketdetails.TicketPriority.Priority">
@@ -57,39 +68,33 @@
                 </b>
             </div>
         </div>
-        <div class="row">
+        <div class="row marginb">
             <div class="col-xs-2">
-                @Html.DisplayNameFor(model => model.ticketdetails.Project.Project)
+                <b>
+                    @Html.DisplayNameFor(model => model.ticketdetails.Project.Project)
+                </b>
             </div>
             <div class="col-xs-4">
                 @Html.DisplayFor(model => model.ticketdetails.Project.Project)
             </div>
         </div>
 
-        <div class="row">
+        <div class="row marginb">
             <div class="col-xs-2">
-                @Html.DisplayNameFor(model => model.ticketdetails.TicketStatus.Status)
+                <b>
+                    @Html.DisplayNameFor(model => model.ticketdetails.TicketStatus.Status)
+                </b>
             </div>
             <div class="col-xs-4">
                 @Html.DisplayFor(model => model.ticketdetails.TicketStatus.Status)
             </div>
             <div class="col-xs-2">
-                @Html.DisplayNameFor(model => model.ticketdetails.TicketType.Type)
+                <b>
+                    @Html.DisplayNameFor(model => model.ticketdetails.TicketType.Type)
+                </b>
             </div>
             <div class="col-xs-4">
                 @Html.DisplayFor(model => model.ticketdetails.TicketType.Type)
-            </div>
-        </div><br />
-        <div class="row">
-            <div class="col-xs-12">
-                <h4>
-                    @Html.DisplayNameFor(model => model.ticketdetails.Description)
-                </h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                @Html.DisplayFor(model => model.ticketdetails.Description)
             </div>
         </div>
     </div>
@@ -102,6 +107,25 @@
                 <a href="@item" target="_blank">@filename.Last()</a><br />
             }
         </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-xs-12">
+        <ul class="nav nav-stacked">
+            <li class="nav-header">
+                <h4><a href="#" onclick="return false" data-toggle="collapse" data-target="#userMenu2" class="nolink inheritcolor">@Html.DisplayNameFor(model => model.ticketdetails.Description) <i class="glyphicon glyphicon-chevron-right"></i></a></h4>
+                <ul class="nav nav-stacked collapse" id="userMenu2">
+                    <li>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                @Html.DisplayFor(model => model.ticketdetails.Description)
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </div>
 </div>
 <div class="row">
@@ -163,3 +187,4 @@
         </p>
     }
 </div>
+</body>

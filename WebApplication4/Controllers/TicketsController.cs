@@ -112,7 +112,7 @@ namespace WebApplication4.Models
         {
             ListboxTicket lbt = new ListboxTicket();
             lbt.PriorityInput = new SelectList(db.Priorities, "Priority", "Priority");
-            lbt.StatusInput = new SelectList(db.Status, "Status", "Status");
+            lbt.StatusInput = new SelectList(db.Status.Where(x => x.Status == "Open"), "Status", "Status", "Open");
             lbt.TypeInput = new SelectList(db.Types, "Type", "Type");
             lbt.ProjectInput = new SelectList(db.Projects, "Project", "Project");
             tickets.lists = lbt;
@@ -254,6 +254,7 @@ namespace WebApplication4.Models
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerId,AssignedId")] Ticket ticket, string Assigned, int ProjectIn)
         {
+            bool sendemail = false;
             if (ModelState.IsValid)
             {
                 var user = db.Users.Where(x => x.UserName == Assigned).Single();
@@ -294,25 +295,29 @@ namespace WebApplication4.Models
                         db.Histories.Add(hist);
                         if(curr == "AssignedId" || curr == "TicketPriorityId" || curr == "TicketStatusId")
                         {
-                            var emails = db.Notifications.Where(x => x.TicketId == ticket.Id).Select(y => y.NotifyUser.Email).ToList();
-                            var username = ConfigurationManager.AppSettings["SendGridUserName"];
-                            var password = ConfigurationManager.AppSettings["SendGridPassword"];
-                            var from = ConfigurationManager.AppSettings["ContactEmail"];
-
-                            foreach (var email in emails)
-                            {
-                                SendGridMessage myMessage = new SendGridMessage();
-                                myMessage.AddTo(email);
-                                myMessage.From = new MailAddress(from);
-                                myMessage.Subject = "Notification for Ticket #" + ticket.Id;
-                                myMessage.Html = "Ticket #" + ticket.Id + " has been updated";
-                                var credentials = new NetworkCredential(username, password);
-
-                                var transportWeb = new Web(credentials);
-
-                                transportWeb.DeliverAsync(myMessage);
-                            }
+                            sendemail = true;
                         }
+                    }
+                }
+                if(sendemail)
+                {
+                    var emails = db.Notifications.Where(x => x.TicketId == ticket.Id).Select(y => y.NotifyUser.Email).ToList();
+                    var username = ConfigurationManager.AppSettings["SendGridUserName"];
+                    var password = ConfigurationManager.AppSettings["SendGridPassword"];
+                    var from = ConfigurationManager.AppSettings["ContactEmail"];
+
+                    foreach (var email in emails)
+                    {
+                        SendGridMessage myMessage = new SendGridMessage();
+                        myMessage.AddTo(email);
+                        myMessage.From = new MailAddress(from);
+                        myMessage.Subject = "Notification for Ticket #" + ticket.Id;
+                        myMessage.Html = "Ticket #" + ticket.Id + " has been updated";
+                        var credentials = new NetworkCredential(username, password);
+
+                        var transportWeb = new Web(credentials);
+
+                        transportWeb.DeliverAsync(myMessage);
                     }
                 }
                 db.Entry(dbin).State = EntityState.Modified;

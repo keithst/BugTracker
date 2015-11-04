@@ -30,12 +30,33 @@
             </div>
         </div>
 
-        @Html.DropDownListFor(x => x.lists.Status, Model.lists.StatusInput, new { Name = "Status" })
-        @Html.DropDownListFor(x => x.lists.Priority, Model.lists.PriorityInput, new { Name = "Priority" })
-        @Html.DropDownListFor(x => x.lists.Type, Model.lists.TypeInput, new { Name = "Type" })
-        @Html.DropDownListFor(x => x.lists.Project, Model.lists.ProjectInput, new { Name = "Project" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.master.TicketStatusId, "Status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(x => x.lists.Status, Model.lists.StatusInput, new { @class = "form-control", Name = "Status" })
+            </div>
+        </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.master.TicketStatusId, "Priority", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(x => x.lists.Priority, Model.lists.PriorityInput, new { @class = "form-control", Name = "Priority" })
+            </div>
+        </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.master.TicketStatusId, "Status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(x => x.lists.Type, Model.lists.TypeInput, new { @class = "form-control", Name = "Type" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.master.TicketStatusId, "Status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(x => x.lists.Project, Model.lists.ProjectInput, new { @class = "form-control", Name = "Project" })
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />

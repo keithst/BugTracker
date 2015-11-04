@@ -6,12 +6,20 @@
     border-color: #A8A8A0;
 }
 
+.marginb {
+    margin-bottom: 5px;
+}
+
 .attachments {
     width: 200px;
-    height: 200px;
+    height: 100px;
     overflow: scroll;
     overflow-x: auto;
     overflow-y: auto;
+}
+
+.scroll {
+    overflow-y: scroll;
 }
 
 .textsize {
