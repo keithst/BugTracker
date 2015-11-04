@@ -177,6 +177,26 @@ namespace WebApplication4.Models
                     }
                 }
 
+
+                var emails = db.Notifications.Where(x => x.TicketId == ticket.Id).Select(y => y.NotifyUser.Email).ToList();
+                var username = ConfigurationManager.AppSettings["SendGridUserName"];
+                var password = ConfigurationManager.AppSettings["SendGridPassword"];
+                var from = ConfigurationManager.AppSettings["ContactEmail"];
+
+                foreach (var email in emails)
+                {
+                    SendGridMessage myMessage = new SendGridMessage();
+                    myMessage.AddTo(email);
+                    myMessage.From = new MailAddress(from);
+                    myMessage.Subject = "Notification for Ticket #" + ticket.Id;
+                    myMessage.Html = "Ticket #" + ticket.Id + " has been created";
+                    var credentials = new NetworkCredential(username, password);
+
+                    var transportWeb = new Web(credentials);
+
+                    transportWeb.DeliverAsync(myMessage);
+                }
+
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -199,21 +219,26 @@ namespace WebApplication4.Models
                 return HttpNotFound();
             }
             var query = db.ProjectUsers.Where(x => x.Project.Project == ticket.Project.Project).ToList();
+            bool found = false;
             foreach(var item in query)
             {
                 var user = db.Users.Where(x => x.Id == item.ProjectUserId).Single();
                 if (helper.IsUserInRole(user.Id, "Developer"))
                 {
                     userassign.Add(user);
+                    found = true;
                 }
             }
-            if (ticket.Assigned.UserName != null)
+            if (found)
             {
-                ticketd.ticketassign = new SelectList(userassign, "UserName", "UserName", ticket.Assigned.UserName);
-            }
-            else
-            {
-                ticketd.ticketassign = new SelectList(userassign, "Username", "UserName");
+                if(!string.IsNullOrWhiteSpace(ticket.AssignedId))
+                {
+                    ticketd.ticketassign = new SelectList(userassign, "UserName", "UserName", ticket.Assigned.UserName);
+                }
+                else
+                {
+                    ticketd.ticketassign = new SelectList(userassign, "UserName", "UserName");
+                }
             }
             ViewBag.TicketPriorityId = new SelectList(db.Priorities, "Id", "Priority", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.Status, "Id", "Status", ticket.TicketStatusId);
@@ -234,20 +259,28 @@ namespace WebApplication4.Models
                 var user = db.Users.Where(x => x.UserName == Assigned).Single();
                 ticket.AssignedId = user.Id;
 
-                TicketNotify note = new TicketNotify();
-                note.TicketId = ticket.Id;
-                note.NotifyUserId = ticket.AssignedId;
-                db.Notifications.Add(note);
-                db.SaveChanges();
-
                 ticket.ProjectId = ProjectIn;
                 var dbin = db.Tickets.Single(x => x.Id == ticket.Id);
                 db.Entry(dbin).CurrentValues.SetValues(ticket);
 
+                if(!db.Entry(dbin).Property("AssignedId").OriginalValue.ToString().Equals(db.Entry(dbin).Property("AssignedId").CurrentValue.ToString()))
+                {
+                    TicketNotify note = new TicketNotify();
+                    note.TicketId = ticket.Id;
+                    note.NotifyUserId = ticket.AssignedId;
+                    db.Notifications.Add(note);
+                    db.SaveChanges();
+                }
+
+
                 var cnames = db.Entry(dbin).CurrentValues.PropertyNames;
                 foreach (var curr in cnames)
                 {
-                    var oldvalue = db.Entry(dbin).Property(curr).OriginalValue.ToString();
+                    var oldvalue = "";
+                    if (db.Entry(dbin).Property(curr).OriginalValue != null)
+                    {
+                        oldvalue = db.Entry(dbin).Property(curr).OriginalValue.ToString();
+                    }
                     var newvalue = db.Entry(dbin).Property(curr).CurrentValue.ToString();
                     if (oldvalue != newvalue)
                     {
@@ -259,7 +292,7 @@ namespace WebApplication4.Models
                         hist.TicketId = ticket.Id;
                         hist.Changed = System.DateTimeOffset.Now;
                         db.Histories.Add(hist);
-                        if(curr == "Assigned" || curr == "PriorityId" || curr == "StatusId")
+                        if(curr == "AssignedId" || curr == "TicketPriorityId" || curr == "TicketStatusId")
                         {
                             var emails = db.Notifications.Where(x => x.TicketId == ticket.Id).Select(y => y.NotifyUser.Email).ToList();
                             var username = ConfigurationManager.AppSettings["SendGridUserName"];
@@ -269,10 +302,10 @@ namespace WebApplication4.Models
                             foreach (var email in emails)
                             {
                                 SendGridMessage myMessage = new SendGridMessage();
-                                myMessage.AddTo(message.Destination);
+                                myMessage.AddTo(email);
                                 myMessage.From = new MailAddress(from);
-                                myMessage.Subject = message.Subject;
-                                myMessage.Html = message.Body;
+                                myMessage.Subject = "Notification for Ticket #" + ticket.Id;
+                                myMessage.Html = "Ticket #" + ticket.Id + " has been updated";
                                 var credentials = new NetworkCredential(username, password);
 
                                 var transportWeb = new Web(credentials);
