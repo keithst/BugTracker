@@ -189,13 +189,14 @@
                     <ul class="nav nav-stacked collapse" id="userMenu3">
                         <li>
                             <div class="row">
-                                <div class="col-xs-12">
+                                <div class="col-xs-8">
+                                    <hr class="hrcolor"/>
                                     @foreach (var item in commentlist)
                                     {
                                         <p>
                                             User: @item.CommentUser.UserName<br />
                                             @item.Comment
-                                        </p><br />
+                                        </p><hr class="hrcolor"/>
                                     }
                                 </div>
                             </div>

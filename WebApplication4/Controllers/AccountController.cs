@@ -490,7 +490,8 @@ namespace WebApplication4.Controllers
             userin.Email = UserName;
             IdentityResult result = await UserManager.UpdateAsync(userin);
             db.SaveChanges();
-            return RedirectToAction("Main", "Home");
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home");
         }
 
         protected override void Dispose(bool disposing)

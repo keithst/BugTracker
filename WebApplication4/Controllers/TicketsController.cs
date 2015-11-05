@@ -264,16 +264,6 @@ namespace WebApplication4.Models
                 var dbin = db.Tickets.Single(x => x.Id == ticket.Id);
                 db.Entry(dbin).CurrentValues.SetValues(ticket);
 
-                if(!db.Entry(dbin).Property("AssignedId").OriginalValue.ToString().Equals(db.Entry(dbin).Property("AssignedId").CurrentValue.ToString()))
-                {
-                    TicketNotify note = new TicketNotify();
-                    note.TicketId = ticket.Id;
-                    note.NotifyUserId = ticket.AssignedId;
-                    db.Notifications.Add(note);
-                    db.SaveChanges();
-                }
-
-
                 var cnames = db.Entry(dbin).CurrentValues.PropertyNames;
                 foreach (var curr in cnames)
                 {
@@ -299,9 +289,17 @@ namespace WebApplication4.Models
                         }
                     }
                 }
+                if (db.Entry(dbin).Property("AssignedId").CurrentValue.ToString() != null || !db.Entry(dbin).Property("AssignedId").OriginalValue.ToString().Equals(db.Entry(dbin).Property("AssignedId").CurrentValue.ToString()))
+                {
+                    TicketNotify note = new TicketNotify();
+                    note.TicketId = ticket.Id;
+                    note.NotifyUserId = ticket.AssignedId;
+                    db.Notifications.Add(note);
+                    db.SaveChanges();
+                }
                 if(sendemail)
                 {
-                    var emails = db.Notifications.Where(x => x.TicketId == ticket.Id).Select(y => y.NotifyUser.Email).ToList();
+                    var emails = db.Notifications.Where(x => x.TicketId == ticket.Id).ToList();
                     var username = ConfigurationManager.AppSettings["SendGridUserName"];
                     var password = ConfigurationManager.AppSettings["SendGridPassword"];
                     var from = ConfigurationManager.AppSettings["ContactEmail"];
@@ -309,10 +307,14 @@ namespace WebApplication4.Models
                     foreach (var email in emails)
                     {
                         SendGridMessage myMessage = new SendGridMessage();
-                        myMessage.AddTo(email);
+                        myMessage.AddTo(email.NotifyUser.Email);
                         myMessage.From = new MailAddress(from);
                         myMessage.Subject = "Notification for Ticket #" + ticket.Id;
                         myMessage.Html = "Ticket #" + ticket.Id + " has been updated";
+                        if(ticket.AssignedId == email.NotifyUserId)
+                        {
+                            myMessage.Html = "Ticket #" + ticket.Id + " has been assigned to you";
+                        }
                         var credentials = new NetworkCredential(username, password);
 
                         var transportWeb = new Web(credentials);

@@ -10,6 +10,10 @@
     margin-bottom: 5px;
 }
 
+.hrcolor {
+    color: gray;
+}
+
 .attachments {
     width: 200px;
     height: 100px;

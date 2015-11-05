@@ -10,7 +10,7 @@
     <button type="submit" class="btn btn-primary">Modify Users</button>
 </form>
 
-<a href="@Url.Action("UserRolePage", "Account")" class="btn btn-primary">Back to List</a>
+<a href="@Url.Action("UserRolePage", "Account")" class="btn btn-primary">Back to List</a><br /><br />
 @if(Model.response != null)
 { 
     foreach(var item in Model.response)

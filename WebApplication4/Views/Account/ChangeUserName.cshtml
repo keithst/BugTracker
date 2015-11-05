@@ -3,12 +3,11 @@
     ViewBag.Title = "ChangeUserName";
 }
 
-<h2>Enter New Username</h2>
-
 <form action="@Url.Action("ChangeUserName", "Account")" method="post">
 <div class="row marginb">
     <div class="col-xs-4">
-        <input type="text" id="search" name="UserName" class="form-control" required />
+        Enter new Username
+        <input type="text" name="UserName" class="form-control" required />
     </div>
 </div>
     <button type="submit" class="btn btn-primary">Update</button>
