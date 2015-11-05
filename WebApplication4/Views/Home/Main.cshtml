@@ -62,10 +62,7 @@
 <script>
     var temp;
     new Morris.Bar({
-        // ID of the element in which to draw the chart.
         element: 'Issues',
-        // Chart data records -- each entry in this array corresponds to a point on
-        // the chart.
         data: [
             @{
             if(Model != null && Model.Count > 0)
@@ -97,13 +94,9 @@
             }
             }
         ],
-        // The name of the data record attribute that contains x-values.
         xkey: 'date',
         parseTime: false,
-        // A list of names of data record attributes that contain y-values.
         ykeys: ['value'],
-        // Labels for the ykeys -- will be displayed when you hover over the
-        // chart.
         labels: ['Open'],
         grid: false,
         axes: 'x'

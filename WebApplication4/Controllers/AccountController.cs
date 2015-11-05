@@ -487,7 +487,9 @@ namespace WebApplication4.Controllers
         {
             var userin = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             userin.UserName = UserName;
+            userin.Email = UserName;
             IdentityResult result = await UserManager.UpdateAsync(userin);
+            db.SaveChanges();
             return RedirectToAction("Main", "Home");
         }
 
