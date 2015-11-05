@@ -43,6 +43,10 @@
                         {
                             <li><a href="@Url.Action("ChangeUserName", "Account")"><i class="glyphicon glyphicon-cog"></i> Change UserName</a></li>
                         }
+                        @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                        {
+                            <li><a href="@Url.Action("ChangeName", "Account")"><i class="glyphicon glyphicon-cog"></i> Change Name</a></li>
+                        }
                         @if (User.IsInRole("Admin"))
                         {
                             <li><a href="@Url.Action("UserRolePage", "Account")"><i class="glyphicon glyphicon-cog"></i> Roles</a></li>

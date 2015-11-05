@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "ChangeName";
+}
+
+<form action="@Url.Action("ChangeName", "Account")" method="post">
+    <div class="row marginb">
+        <div class="col-xs-4">
+            Enter First Name
+            <input type="text" name="FirstName" class="form-control" required />
+        </div>
+        <div class="col-xs-4">
+            Enter Last Name
+            <input type="text" name="LastName" class="form-control" required />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>

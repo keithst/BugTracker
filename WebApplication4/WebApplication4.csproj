@@ -450,6 +450,7 @@
     <Content Include="Views\Account\ChangeUserName.cshtml" />
     <Content Include="Views\Account\UserRolePageSub.cshtml" />
     <Content Include="Views\Home\Report.cshtml" />
+    <Content Include="Views\Account\ChangeName.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
