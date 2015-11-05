@@ -13,6 +13,7 @@
     <link href="~/Content/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="~/Content/DataTables/css/responsive.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 </head>
 <body>
     <!-- header -->
@@ -46,8 +47,11 @@
     @Scripts.Render("~/bundles/bootstrap")
     <!-- Bootstrap Core JavaScript -->
     <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/Chart.js"></script>
     <script src="~/Scripts/scripts.js"></script>
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

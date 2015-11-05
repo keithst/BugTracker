@@ -1,4 +1,4 @@
-﻿
+﻿@model IList<WebApplication4.Models.Ticket>
 @{
     ViewBag.Title = "Main";
 }
@@ -53,51 +53,60 @@
         </div>
         <!-- /col-3 -->
         <div class="col-sm-9">
-            <!-- column 2 -->
-            <ul class="list-inline pull-right">
-                <li><a href="#"><i class="glyphicon glyphicon-cog"></i></a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-comment"></i><span class="count">3</span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">1. Is there a way..</a></li>
-                        <li><a href="#">2. Hello, admin. I would..</a></li>
-                        <li><a href="#"><strong>All messages</strong></a></li>
-                    </ul>
-                </li>
-                <li><a href="#"><i class="glyphicon glyphicon-user"></i></a></li>
-                <li><a title="Add Widget" data-toggle="modal" href="#addWidgetModal"><span class="glyphicon glyphicon-plus-sign"></span> Add Widget</a></li>
-            </ul>
-            <a href="#"><strong><i class="glyphicon glyphicon-dashboard"></i> My Dashboard</strong></a>
-            <hr>
-            <div class="row">
-                <!-- center left-->
-                <div class="col-md-6">
-                    <div class="well">Inbox Messages <span class="badge pull-right">3</span></div>
-                    <hr>
-                    <div class="btn-group btn-group-justified">
-                        <a href="#" class="btn btn-primary col-sm-3">
-                            <i class="glyphicon glyphicon-plus"></i>
-                            <br> Service
-                        </a>
-                        <a href="#" class="btn btn-primary col-sm-3">
-                            <i class="glyphicon glyphicon-cloud"></i>
-                            <br> Cloud
-                        </a>
-                        <a href="#" class="btn btn-primary col-sm-3">
-                            <i class="glyphicon glyphicon-cog"></i>
-                            <br> Tools
-                        </a>
-                        <a href="#" class="btn btn-primary col-sm-3">
-                            <i class="glyphicon glyphicon-question-sign"></i>
-                            <br> Help
-                        </a>
-                    </div>
-                    <hr>
-                     <!--/panel-body-->
-                    </div>
-                </div>
-                <!--/col-span-6-->
-            </div>
+            <h3>Total Issues Opened By Month</h3>
+            <div id="Issues" style="height: 400px;"></div>
         </div>
-        <!--/col-span-9-->
     </div>
+</div>
+@section scripts{
+<script>
+    var temp;
+    new Morris.Bar({
+        // ID of the element in which to draw the chart.
+        element: 'Issues',
+        // Chart data records -- each entry in this array corresponds to a point on
+        // the chart.
+        data: [
+            @{
+            if(Model != null && Model.Count > 0)
+            {
+                var first = Model.First();
+                var mmonth = first.Created.Month;
+                var myear = first.Created.Year;
+                var cmonth = first.Created.Month;
+                var cyear = first.Created.Year;
+                var total = 0;
+            foreach(var item in Model)
+            {
+                var month = item.Created.Month;
+                var year = item.Created.Year;
+                if(mmonth == month && myear == year)
+                {
+                    total++;
+                }
+                else
+                {
+                    @:{ date: '@mmonth/@myear', value: '@total' },
+                    mmonth = month;
+                    myear = year;
+                    total = 0;
+                    total++;
+                }
+            }
+            @:{ date: '@mmonth/@myear', value: '@total' }
+            }
+            }
+        ],
+        // The name of the data record attribute that contains x-values.
+        xkey: 'date',
+        parseTime: false,
+        // A list of names of data record attributes that contain y-values.
+        ykeys: ['value'],
+        // Labels for the ykeys -- will be displayed when you hover over the
+        // chart.
+        labels: ['Open'],
+        grid: false,
+        axes: 'x'
+    });
+</script>
+}

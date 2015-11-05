@@ -40,7 +40,8 @@ namespace WebApplication4.Controllers
 
         public ActionResult Main()
         {
-            return View();
+            var chartdata = db.Tickets.OrderBy(y => y.Created).ToList();
+            return View(chartdata);
         }
 
         [Authorize]
