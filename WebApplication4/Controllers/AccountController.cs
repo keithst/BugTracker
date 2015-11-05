@@ -419,6 +419,7 @@ namespace WebApplication4.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult UserRolePageSub(string id)
         {
             if (id == null)
@@ -483,6 +484,7 @@ namespace WebApplication4.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangeUserName(string UserName)
         {
             var userin = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -500,6 +502,7 @@ namespace WebApplication4.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangeName(string FirstName, string LastName)
         {
             var userin = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -508,6 +511,28 @@ namespace WebApplication4.Controllers
             IdentityResult result = await UserManager.UpdateAsync(userin);
             db.SaveChanges();
             return RedirectToAction("Main", "Home");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Guest()
+        {
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            var result = await SignInManager.PasswordSignInAsync("guest@guest.com", "Password-1", false, false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToAction("Main", "Home");
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View();
+            }
         }
 
         protected override void Dispose(bool disposing)

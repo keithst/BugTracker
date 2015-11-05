@@ -4,6 +4,7 @@
 }
 
 <form action="@Url.Action("ChangeUserName", "Account")" method="post">
+    @Html.AntiForgeryToken()
 <div class="row marginb">
     <div class="col-xs-4">
         Enter new Username

@@ -49,6 +49,10 @@
                     </p>
             }
         </section>
+        <form action="@Url.Action("Guest", "Account")" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-primary">Login As Guest</button>
+        </form>
     </div>
 </div>
 

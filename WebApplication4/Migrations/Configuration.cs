@@ -43,6 +43,24 @@ namespace WebApplication4.Migrations
             var userId = userManager.FindByEmail("keith.sturzenbecker@gmail.com").Id;
             userManager.AddToRole(userId, "Admin");
 
+            var userGuest = new UserManager<ApplicationUser>(
+            new UserStore<ApplicationUser>(context));
+
+            if (!context.Users.Any(u => u.Email == "guest@guest.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "guest@guest.com",
+                    Email = "guest@guest.com",
+                    FirstName = "guest",
+                    LastName = "guest"
+                },
+                        "Password-1");
+            }
+
+            var userGuestId = userManager.FindByEmail("guest@guest.com").Id;
+            userManager.AddToRole(userGuestId, "Admin");
+
             if (!context.Roles.Any(r => r.Name == "ProjectManager"))
             {
                 roleManager.Create(new IdentityRole { Name = "ProjectManager" });
