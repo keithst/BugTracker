@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(x => title.Id)
-            </th>
-            <th>
                 @Html.DisplayNameFor(x => title.Title)
             </th>
             <th>
@@ -26,12 +23,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(x => title.TicketStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(x => title.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(x => title.Owner)
             </th>
             <th>
                 @Html.DisplayNameFor(x => title.Assigned)
@@ -53,9 +44,6 @@
                     {
                     <tr>
                         <td>
-                            @Html.DisplayFor(x => item.Id)
-                        </td>
-                        <td>
                             @Html.DisplayFor(x => item.Title)
                         </td>
                         <td>
@@ -68,12 +56,6 @@
                         </td>
                         <td>
                             @Html.DisplayFor(x => item.TicketStatus.Status)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(x => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(x => item.Owner.UserName)
                         </td>
                         <td>
                             @Html.DisplayFor(x => item.Assigned.UserName)

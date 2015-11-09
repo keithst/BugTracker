@@ -160,7 +160,7 @@
                                 (User.IsInRole("Developer") && Model.accessin.assignconfirmed) || 
                                 (User.IsInRole("Submitter") && Model.accessin.ownerconfirmed))
     {
-        @Html.ActionLink("Edit", "Edit", new { id = Model.ticketdetails.Id }) @:|
+        <a href="@Url.Action("Edit", "Tickets", new { id = Model.ticketdetails.Id })">Edit</a> @:|
     }
     @Html.ActionLink("Back to List", "Index")
 </p><br />
