@@ -6,56 +6,6 @@
 <!-- Main -->
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3">
-            <ul class="nav nav-stacked">
-                <li class="nav-header">
-                    <a href="#" onclick="return false" data-toggle="collapse" data-target="#userMenu">Tickets <i class="glyphicon glyphicon-chevron-down"></i></a>
-                    <ul class="nav nav-stacked collapse in" id="userMenu">
-                        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer"))
-                        {
-                            <li><a href="@Url.Action("Index", "Projects")"><i class="glyphicon glyphicon-list-alt"></i> Project List</a></li>
-                        }
-                        @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
-                        {
-                            <li><a href="@Url.Action("Index", "Tickets")"><i class="glyphicon glyphicon-list-alt"></i> Ticket List</a></li>
-                        }
-                    </ul>
-                </li>
-                <li class="nav-header">
-                    <a href="#" onclick="return false" data-toggle="collapse" data-target="#menu2"> Reports <i class="glyphicon glyphicon-chevron-down"></i></a>
-                    <ul class="nav nav-stacked collapse in" id="menu2">
-                        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
-                        {
-                            <li><a href="@Url.Action("Report")"><i class="glyphicon glyphicon-file"></i> Reports</a></li>
-                        }
-                    </ul>
-                </li>
-            </ul>
-            <ul class="nav nav-stacked">
-                <li class="nav-header">
-                    <a href="#" onclick="return false" data-toggle="collapse" data-target="#userMenu1">Account <i class="glyphicon glyphicon-chevron-down"></i></a>
-                    <ul class="nav nav-stacked collapse in" id="userMenu1">
-                        @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
-                        {
-                            <li><a href="@Url.Action("ChangePassword", "Manage")"><i class="glyphicon glyphicon-cog"></i> Change Password</a></li>
-                        }
-                        @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
-                        {
-                            <li><a href="@Url.Action("ChangeUserName", "Account")"><i class="glyphicon glyphicon-cog"></i> Change UserName</a></li>
-                        }
-                        @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
-                        {
-                            <li><a href="@Url.Action("ChangeName", "Account")"><i class="glyphicon glyphicon-cog"></i> Change Name</a></li>
-                        }
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li><a href="@Url.Action("UserRolePage", "Account")"><i class="glyphicon glyphicon-cog"></i> Roles</a></li>
-                        }
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <!-- /col-3 -->
         <div class="col-sm-9">
             <h3>Total Tickets Opened By Month</h3>
             <div id="Tickets" style="height: 400px;"></div>

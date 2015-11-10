@@ -10,15 +10,16 @@
     <!-- Bootstrap Core CSS -->
     <link href="~/Content/bootstrap.css" rel="stylesheet">
     <link href="~/Content/styles.css" rel="stylesheet">
+    <link href="~/Content/sb-admin-2.css" rel="stylesheet">
     <link href="~/Content/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="~/Content/DataTables/css/responsive.dataTables.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 </head>
 <body>
-    <!-- header -->
-    <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
-        <div class="container-fluid">
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-left">
                 @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
                 {
@@ -35,23 +36,81 @@
                     </form>
                 }
             </div>
-        </div>
-        <!-- /container -->
-    </div>
-    <!-- /Header -->
-    <div class="container body-content">
-        @RenderBody()
-    </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    <!-- Bootstrap Core JavaScript -->
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/Chart.js"></script>
-    <script src="~/Scripts/scripts.js"></script>
-    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-    @RenderSection("scripts", required: false)
+            <!-- /.navbar-top-links -->
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <ul class="nav nav-stacked">
+                        <li class="nav-header">
+                            <a href="#" onclick="return false" data-toggle="collapse" data-target="#userMenu">Tickets <i class="glyphicon glyphicon-chevron-down"></i></a>
+                            <ul class="nav nav-stacked collapse in" id="userMenu">
+                                @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer"))
+                                {
+                                    <li><a href="@Url.Action("Index", "Projects")"><i class="glyphicon glyphicon-list-alt"></i> Project List</a></li>
+                                }
+                                @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                                {
+                                    <li><a href="@Url.Action("Index", "Tickets")"><i class="glyphicon glyphicon-list-alt"></i> Ticket List</a></li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="nav-header">
+                            <a href="#" onclick="return false" data-toggle="collapse" data-target="#menu2"> Reports <i class="glyphicon glyphicon-chevron-down"></i></a>
+                            <ul class="nav nav-stacked collapse in" id="menu2">
+                                @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
+                                {
+                                    <li><a href="@Url.Action("Report")"><i class="glyphicon glyphicon-file"></i> Reports</a></li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-stacked">
+                        <li class="nav-header">
+                            <a href="#" onclick="return false" data-toggle="collapse" data-target="#userMenu1">Account <i class="glyphicon glyphicon-chevron-down"></i></a>
+                            <ul class="nav nav-stacked collapse in" id="userMenu1">
+                                @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                                {
+                                    <li><a href="@Url.Action("ChangePassword", "Manage")"><i class="glyphicon glyphicon-cog"></i> Change Password</a></li>
+                                }
+                                @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                                {
+                                    <li><a href="@Url.Action("ChangeUserName", "Account")"><i class="glyphicon glyphicon-cog"></i> Change UserName</a></li>
+                                }
+                                @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                                {
+                                    <li><a href="@Url.Action("ChangeName", "Account")"><i class="glyphicon glyphicon-cog"></i> Change Name</a></li>
+                                }
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li><a href="@Url.Action("UserRolePage", "Account")"><i class="glyphicon glyphicon-cog"></i> Roles</a></li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                }
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <div id="page-wrapper">
+            <div class="container body-content">
+                @RenderBody()
+            </div>
+        </div>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        <!-- Bootstrap Core JavaScript -->
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/Chart.js"></script>
+        <script src="~/Scripts/scripts.js"></script>
+        <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+        @RenderSection("scripts", required: false)
 </body>
 </html>

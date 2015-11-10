@@ -3,16 +3,7 @@
 
 @{
     ViewBag.Title = "Details";
-    IList<string> attachments = new List<string>();
     IList<TicketComments> commentlist = new List<TicketComments>();
-}
-@foreach (var item in Model.ticketdetails.TicketComments)
-{
-    if(item.AttachURL != null)
-    {
-        attachments.Add(item.AttachURL);
-    }
-    commentlist.Add(item);
 }
 <body class="scroll">
 <h2>Ticket #@Model.ticketdetails.Id</h2>
@@ -99,14 +90,6 @@
         </div>
     </div>
     <div class="col-xs-3">
-        <h4>Attachments</h4>
-        <div class="attachments">
-            @foreach (var item in attachments)
-            {
-                var filename = item.Split('/');
-                <a href="@item" target="_blank">@filename.Last()</a><br />
-            }
-        </div>
     </div>
 </div>
 <div class="row">
@@ -191,11 +174,16 @@
                             <div class="row">
                                 <div class="col-xs-8">
                                     <hr class="hrcolor"/>
-                                    @foreach (var item in commentlist)
+                                    @foreach (var item in Model.ticketdetails.TicketComments)
                                     {
                                         <p>
                                             User: @item.CommentUser.UserName<br />
-                                            @item.Comment
+                                            @item.Comment<br />
+                                        @if (item.AttachURL != null)
+                                        {
+                                            var filename = @item.AttachURL.Split('/');
+                                            <a href="@item.AttachURL" target="_blank">@filename.Last()</a><br />
+                                        }
                                         </p><hr class="hrcolor"/>
                                     }
                                 </div>

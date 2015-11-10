@@ -521,18 +521,12 @@ namespace WebApplication4.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync("guest@guest.com", "Password-1", false, false);
-            switch (result)
+            var user = await UserManager.FindByNameAsync("guest@guest.com");
+            if (user != null)
             {
-                case SignInStatus.Success:
-                    return RedirectToAction("Main", "Home");
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View();
+                await SignInManager.SignInAsync(user, false, false);
             }
+                    return RedirectToAction("Main", "Home");
         }
 
         protected override void Dispose(bool disposing)
