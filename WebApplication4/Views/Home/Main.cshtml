@@ -1,9 +1,59 @@
 ﻿@model IList<WebApplication4.Models.Ticket>
 @{
     ViewBag.Title = "Main";
+    var title = Model.FirstOrDefault();
 }
 
 <!-- Main -->
+<table id="table1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(x => title.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.TicketPriority)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.TicketStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.Assigned)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => title.Project)
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(x => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => item.Created)
+                    </td>
+                    <td>
+                        <b class="@item.TicketPriority.Priority">
+                            @Html.DisplayFor(x => item.TicketPriority.Priority)
+                        </b>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => item.TicketStatus.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => item.Assigned.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => item.Project.Project)
+                    </td>
+                </tr>
+    }
+</table>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-9">
@@ -12,6 +62,7 @@
         </div>
     </div>
 </div>
+
 @section scripts{
 <script>
     new Morris.Bar({
@@ -55,4 +106,9 @@
         axes: 'x'
     });
 </script>
+    <script>
+        $(document).ready(function () {
+            $("#table1").DataTable();
+        })
+    </script>
 }

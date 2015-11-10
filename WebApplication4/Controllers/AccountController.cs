@@ -487,6 +487,15 @@ namespace WebApplication4.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangeUserName(string UserName)
         {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(UserName);
+            }
+            catch
+            {
+                ViewBag.response = "Username is not a valid email";
+                return View();
+            }
             var userin = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             userin.UserName = UserName;
             userin.Email = UserName;
