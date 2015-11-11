@@ -125,7 +125,7 @@ namespace WebApplication4.Models
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerId,AssignedId")] Ticket ticket, string Title, string Description, string Status, string Type, string Priority, string Project)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,Created,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerId,AssignedId")] Ticket ticket, string Title, string Status, string Type, string Priority, string Project)
         {
             if (ModelState.IsValid)
             {
@@ -154,7 +154,6 @@ namespace WebApplication4.Models
                     ticket.TicketTypeId = queryt;
                 }
                 ticket.Title = Title;
-                ticket.Description = Description;
                 ticket.Created = System.DateTimeOffset.Now;
                 ticket.OwnerId = User.Identity.GetUserId();
 
@@ -257,8 +256,11 @@ namespace WebApplication4.Models
             bool sendemail = false;
             if (ModelState.IsValid)
             {
-                var user = db.Users.Where(x => x.UserName == Assigned).Single();
-                ticket.AssignedId = user.Id;
+                if (!string.IsNullOrWhiteSpace(Assigned))
+                {
+                    var user = db.Users.Where(x => x.UserName == Assigned).Single();
+                    ticket.AssignedId = user.Id;
+                }
 
                 ticket.ProjectId = ProjectIn;
                 var dbin = db.Tickets.Single(x => x.Id == ticket.Id);
@@ -268,11 +270,15 @@ namespace WebApplication4.Models
                 foreach (var curr in cnames)
                 {
                     var oldvalue = "";
+                    var newvalue = "";
                     if (db.Entry(dbin).Property(curr).OriginalValue != null)
                     {
                         oldvalue = db.Entry(dbin).Property(curr).OriginalValue.ToString();
                     }
-                    var newvalue = db.Entry(dbin).Property(curr).CurrentValue.ToString();
+                    if (db.Entry(dbin).Property(curr).CurrentValue != null)
+                    {
+                        newvalue = db.Entry(dbin).Property(curr).CurrentValue.ToString();
+                    }
                     if (oldvalue != newvalue)
                     {
                         TicketHistory hist = new TicketHistory();
@@ -289,13 +295,16 @@ namespace WebApplication4.Models
                         }
                     }
                 }
-                if (db.Entry(dbin).Property("AssignedId").CurrentValue.ToString() != null || !db.Entry(dbin).Property("AssignedId").OriginalValue.ToString().Equals(db.Entry(dbin).Property("AssignedId").CurrentValue.ToString()))
+                if (db.Entry(dbin).Property("AssignedId").CurrentValue != null)
                 {
-                    TicketNotify note = new TicketNotify();
-                    note.TicketId = ticket.Id;
-                    note.NotifyUserId = ticket.AssignedId;
-                    db.Notifications.Add(note);
-                    db.SaveChanges();
+                    if(!db.Entry(dbin).Property("AssignedId").OriginalValue.ToString().Equals(db.Entry(dbin).Property("AssignedId").CurrentValue.ToString()))
+                    {
+                        TicketNotify note = new TicketNotify();
+                        note.TicketId = ticket.Id;
+                        note.NotifyUserId = ticket.AssignedId;
+                        db.Notifications.Add(note);
+                        db.SaveChanges();
+                    }
                 }
                 if(sendemail)
                 {
@@ -311,9 +320,12 @@ namespace WebApplication4.Models
                         myMessage.From = new MailAddress(from);
                         myMessage.Subject = "Notification for Ticket #" + ticket.Id;
                         myMessage.Html = "Ticket #" + ticket.Id + " has been updated";
-                        if(ticket.AssignedId == email.NotifyUserId)
+                        if (!string.IsNullOrWhiteSpace(ticket.AssignedId))
                         {
-                            myMessage.Html = "Ticket #" + ticket.Id + " has been assigned to you";
+                            if (ticket.AssignedId == email.NotifyUserId)
+                            {
+                                myMessage.Html = "Ticket #" + ticket.Id + " has been assigned to you or updated";
+                            }
                         }
                         var credentials = new NetworkCredential(username, password);
 

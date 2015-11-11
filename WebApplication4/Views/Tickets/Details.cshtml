@@ -102,7 +102,7 @@
                     <li>
                         <div class="row">
                             <div class="col-xs-12">
-                                @Html.DisplayFor(model => model.ticketdetails.Description)
+                                @Html.Raw(Model.ticketdetails.Description)
                             </div>
                         </div>
                     </li>
@@ -125,8 +125,8 @@
                             <div class="row">
                                 <div class="col-xs-12">
                                     @item.TicketFieldName changed on @item.Changed by @item.HistoryUser.UserName<br />
-                                    Old value: @item.OldValue<br />
-                                    New value: @item.NewValue<br />
+                                    Old value: @Html.Raw(item.OldValue)<br />
+                                    New value: @Html.Raw(item.NewValue)<br />
                                 </div>
                             </div>
                         }

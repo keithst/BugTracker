@@ -25,7 +25,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.master.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.master.Description, new { htmlAttributes = new { @class = "form-control", Name = "Description" } })
+                @Html.EditorFor(model => model.master.Description, new { htmlAttributes = new { @class = "form-control", rows = "5", id = "editor", Name = "Description" } })
                 @Html.ValidationMessageFor(model => model.master.Description, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -68,3 +68,10 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#editor").tinymce({});
+        });
+    </script>
+}
