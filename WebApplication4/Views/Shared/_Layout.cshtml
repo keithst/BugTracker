@@ -74,7 +74,7 @@
                                 {
                                     <li><a href="@Url.Action("ChangePassword", "Manage")"><i class="glyphicon glyphicon-cog"></i> Change Password</a></li>
                                 }
-                                @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                                @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated  && User.Identity.Name != "guest@guest.com")
                                 {
                                     <li><a href="@Url.Action("ChangeUserName", "Account")"><i class="glyphicon glyphicon-cog"></i> Change UserName</a></li>
                                 }
