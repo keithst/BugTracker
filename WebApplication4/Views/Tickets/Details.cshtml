@@ -26,7 +26,7 @@
             </div>
 
             <div class="col-xs-4">
-                @Html.DisplayFor(model => model.ticketdetails.Created)
+                @Model.ticketdetails.Created.ToString("MMMM d, yyyy h:m tt")
             </div>
         </div>
         <div class="row marginb">
@@ -124,7 +124,7 @@
                         {
                             <div class="row">
                                 <div class="col-xs-12">
-                                    @item.TicketFieldName changed on @item.Changed by @item.HistoryUser.UserName<br />
+                                    @item.TicketFieldName changed on @item.Changed.ToString("MMMM d, yyyy h:m tt") by @item.HistoryUser.UserName<br />
                                     Old value: @Html.Raw(item.OldValue)<br />
                                     New value: @Html.Raw(item.NewValue)<br />
                                 </div>

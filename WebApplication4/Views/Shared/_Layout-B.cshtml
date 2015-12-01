@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Bug Tracker</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/bootstrap.css" rel="stylesheet">
+    <link href="~/Content/styles.css" rel="stylesheet">
+    <link href="~/Content/sb-admin-2.css" rel="stylesheet">
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables/css/responsive.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-left">
+                @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <a class="navbar-brand" href="@Url.Action("Main", "Home")">Dashboard</a>
+                }
+            </div>
+            <div class="navbar-right">
+                @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <b class="navbar-text textsize">Logged in as: @User.Identity.Name</b>
+                    <form action="@Url.Action("LogOff", "Account")" method="post" class="formalign">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="navbar-brand button"><i class="glyphicon glyphicon-lock"></i> Log Off</button>
+                    </form>
+                }
+            </div>
+
+      
+        </nav>
+                @RenderBody()
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        <!-- Bootstrap Core JavaScript -->
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/Chart.js"></script>
+        <script src="~/Scripts/scripts.js"></script>
+        <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
+        <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+        <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+        @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -38,7 +38,7 @@
                         @Html.DisplayFor(x => item.Title)
                     </td>
                     <td>
-                        @Html.DisplayFor(x => item.Created)
+                        @item.Created.ToString("MMMM d, yyyy h:m tt")
                     </td>
                     <td>
                         <b class="@item.TicketPriority.Priority">
