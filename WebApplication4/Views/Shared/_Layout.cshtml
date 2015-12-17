@@ -61,7 +61,7 @@
                             <ul class="nav nav-stacked collapse in" id="menu2">
                                 @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
                                 {
-                                    <li><a href="@Url.Action("Report")"><i class="glyphicon glyphicon-file"></i> Reports</a></li>
+                                    <li><a href="@Url.Action("Report", "Home")"><i class="glyphicon glyphicon-file"></i> Reports</a></li>
                                 }
                             </ul>
                         </li>
