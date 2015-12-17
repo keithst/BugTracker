@@ -20,6 +20,17 @@ namespace WebApplication4.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public override bool Equals(object other) //note parameter is of type object
+        {
+            ApplicationUser t = other as ApplicationUser;
+            return Id.Equals(t.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
